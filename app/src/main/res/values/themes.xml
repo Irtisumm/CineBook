@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.CineBook" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- Set the status bar color to white -->
+        <item name="android:statusBarColor">@android:color/white</item>
+        <!-- Ensure the status bar icons are dark for better visibility on a white background -->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.CineBook" parent="Base.Theme.CineBook" />
+</resources>

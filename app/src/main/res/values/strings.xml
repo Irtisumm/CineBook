@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CineBook</string>
+    <string-array name="malaysian_cities">
+        <item>Kuala Lumpur</item>
+        <item>Penang</item>
+        <item>Johor Bahru</item>
+        <item>Malacca</item>
+        <item>Kota Kinabalu</item>
+        <item>Kuching</item>
+    </string-array>
+</resources>
