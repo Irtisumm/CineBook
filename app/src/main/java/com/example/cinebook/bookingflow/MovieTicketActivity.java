@@ -1,20 +1,38 @@
 package com.example.cinebook.bookingflow;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import com.bumptech.glide.Glide;
 import com.example.cinebook.R;
 import com.example.cinebook.model.TicketOrder;
+import com.example.cinebook.screens.HomeScreen;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.BarcodeFormat;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class MovieTicketActivity extends AppCompatActivity {
 
@@ -31,6 +49,11 @@ public class MovieTicketActivity extends AppCompatActivity {
     private TextView seatNumbersTextView;
     private ShapeableImageView qrCodeImageView;
     private TextView barcodeNumberTextView;
+    private LinearLayout downloadButton;
+    private LinearLayout shareButton;
+    private LinearLayout backToHomeButton;
+    private static final int STORAGE_PERMISSION_CODE = 100;
+    private File pdfFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +74,9 @@ public class MovieTicketActivity extends AppCompatActivity {
         seatNumbersTextView = findViewById(R.id.seat_numbers);
         qrCodeImageView = findViewById(R.id.qr_code_image);
         barcodeNumberTextView = findViewById(R.id.barcode_number);
+        downloadButton = findViewById(R.id.download_button);
+        shareButton = findViewById(R.id.share_button);
+        backToHomeButton = findViewById(R.id.back_to_home_button);
 
         // Retrieve data from intent
         Intent intent = getIntent();
@@ -62,6 +88,32 @@ public class MovieTicketActivity extends AppCompatActivity {
             Log.e("MovieTicketActivity", "TicketOrder is null");
             finish();
         }
+
+        // Download button click listener
+        downloadButton.setOnClickListener(v -> {
+            if (checkStoragePermission()) {
+                generateAndSavePDF(order);
+            } else {
+                requestStoragePermission();
+            }
+        });
+
+        // Share button click listener
+        shareButton.setOnClickListener(v -> {
+            if (checkStoragePermission()) {
+                sharePDF(order);
+            } else {
+                requestStoragePermission();
+            }
+        });
+
+        // Back to Home button click listener
+        backToHomeButton.setOnClickListener(v -> {
+            Intent homeIntent = new Intent(MovieTicketActivity.this, HomeScreen.class);
+            homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(homeIntent);
+            finish();
+        });
     }
 
     private void bindData(TicketOrder order) {
@@ -141,5 +193,103 @@ public class MovieTicketActivity extends AppCompatActivity {
                 (int) (Math.random() * 100000),
                 (int) (Math.random() * 1000000),
                 (int) (Math.random() * 100000000));
+    }
+
+    private boolean checkStoragePermission() {
+        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                STORAGE_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Storage permission granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Storage permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void generateAndSavePDF(TicketOrder order) {
+        try {
+            // Define file path
+            String fileName = "Ticket_" + order.getMovieTitle().replace(" ", "_") + "_" + generateBookingCode() + ".pdf";
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            pdfFile = new File(directory, fileName);
+
+            // Create PDF
+            PdfWriter writer = new PdfWriter(new FileOutputStream(pdfFile));
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            // Add ticket details
+            document.add(new Paragraph("Movie Ticket").setBold().setFontSize(20));
+            document.add(new Paragraph("Booking Code: #" + generateBookingCode()));
+            document.add(new Paragraph("Movie: " + order.getMovieTitle()));
+            document.add(new Paragraph("Cinema: " + (order.getCinemaLocation() != null ? order.getCinemaLocation() : "Unknown")));
+            document.add(new Paragraph("Showtime: " + (order.getShowTime() != null ? order.getShowTime() : "Unknown")));
+            document.add(new Paragraph("Class: Regular"));
+            document.add(new Paragraph("Studio: " + (order.getStudio() != null ? order.getStudio() : "Unknown")));
+            document.add(new Paragraph("Row: " + (order.getRow() != null ? order.getRow() : "Unknown")));
+            document.add(new Paragraph("Seats: " + String.join(", ", order.getSelectedSeats())));
+
+            // Add QR code
+            Bitmap qrBitmap = generateQRCode(
+                    "Booking Code: #" + generateBookingCode() + "\n" +
+                            "Movie: " + order.getMovieTitle() + "\n" +
+                            "Seats: " + String.join(", ", order.getSelectedSeats()) + "\n" +
+                            "Location: " + (order.getCinemaLocation() != null ? order.getCinemaLocation() : "Unknown") + "\n" +
+                            "Time: " + (order.getShowTime() != null ? order.getShowTime() : "Unknown")
+            );
+            if (qrBitmap != null) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                qrBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                ImageData imageData = ImageDataFactory.create(stream.toByteArray());
+                Image qrImage = new Image(imageData);
+                qrImage.setWidth(100);
+                qrImage.setHeight(100);
+                document.add(qrImage);
+            }
+
+            // Close document
+            document.close();
+
+            Toast.makeText(this, "PDF saved to Downloads: " + fileName, Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Log.e("MovieTicketActivity", "Error generating PDF: " + e.getMessage());
+            Toast.makeText(this, "Failed to generate PDF", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sharePDF(TicketOrder order) {
+        try {
+            // Generate PDF if not already created
+            if (pdfFile == null || !pdfFile.exists()) {
+                generateAndSavePDF(order);
+            }
+
+            // Share PDF
+            Uri pdfUri = FileProvider.getUriForFile(this,
+                    getApplicationContext().getPackageName() + ".provider",
+                    pdfFile);
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("application/pdf");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, pdfUri);
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Movie Ticket: " + order.getMovieTitle());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Here is your movie ticket PDF for " + order.getMovieTitle());
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(shareIntent, "Share Ticket PDF"));
+        } catch (Exception e) {
+            Log.e("MovieTicketActivity", "Error sharing PDF: " + e.getMessage());
+            Toast.makeText(this, "Failed to share PDF", Toast.LENGTH_SHORT).show();
+        }
     }
 }

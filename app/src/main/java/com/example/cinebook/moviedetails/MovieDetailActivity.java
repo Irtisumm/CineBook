@@ -94,14 +94,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         // Continue button click listener
         continueButton.setOnClickListener(v -> {
             Intent intent = new Intent(MovieDetailActivity.this, FiestBookingTicketFlow.class);
-            // Pass relevant data to FiestBookingTicketFlow
             Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                intent.putExtra("movie_title", movieTitle.getText().toString());
-                intent.putExtra("selected_theater", cinemaName.getText().toString());
-                intent.putExtra("selected_date", extras.getString("selected_date", "N/A"));
-                intent.putExtra("selected_showtime", extras.getString("selected_showtime", "N/A"));
-            }
+            intent.putExtra("movie_title", movieTitle.getText().toString());
+            intent.putExtra("selected_theater", cinemaName.getText().toString());
+            intent.putExtra("selected_date", extras != null ? extras.getString("selected_date", "N/A") : "N/A");
+            intent.putExtra("selected_showtime", extras != null ? extras.getString("selected_showtime", "N/A") : "N/A");
+            String posterPath = moviePoster.getTag() != null ? moviePoster.getTag().toString() : "";
+            intent.putExtra("poster_path", posterPath);
             startActivity(intent);
         });
 
@@ -123,7 +122,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         // Load movie data from API
         if (movie != null) {
-            movieTitle.setText(movie.getTitle()); // Immediate feedback
+            movieTitle.setText(movie.getTitle());
             loadMovieDetails(movie.getId());
             loadMovieCredits(movie.getId());
         } else {
@@ -150,11 +149,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                     TmdbMovieDetails details = response.body();
 
                     // Poster
+                    String posterUrl = "https://image.tmdb.org/t/p/w500" + details.getPosterPath();
                     Glide.with(MovieDetailActivity.this)
-                            .load("https://image.tmdb.org/t/p/w500" + details.getPosterPath())
+                            .load(posterUrl)
                             .placeholder(R.drawable.placeholder)
                             .error(R.drawable.error)
                             .into(moviePoster);
+                    moviePoster.setTag(posterUrl);
 
                     // Title
                     movieTitle.setText(details.getTitle());
@@ -162,12 +163,12 @@ public class MovieDetailActivity extends AppCompatActivity {
                     // Synopsis
                     synopsis.setText(details.getOverview());
 
-                    // Rating (TMDB vote average, no MPAA available)
+                    // Rating
                     String ratingStr = details.getVoteAverage() > 0 ? String.format("%.1f", details.getVoteAverage()) : "N/A";
                     rating.setText(ratingStr);
                     score.setText(ratingStr);
                     totalRatings.setText(details.getVoteCount() + " Ratings");
-                    ratedValue.setText(ratingStr); // Use vote average for "Rated"
+                    ratedValue.setText(ratingStr);
 
                     // Duration
                     int runtime = details.getRuntime();

@@ -3,6 +3,7 @@ package com.example.cinebook.bookingflow;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,10 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.cinebook.R;
 import com.example.cinebook.model.TicketOrder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +22,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     private ImageView logoImage;
     private ImageView cinemaIcon;
     private ImageView screenImage;
+    private ImageView moviePoster;
     private LinearLayout timerButton;
     private LinearLayout continueButton;
     private LinearLayout rowK, rowJ, rowH, rowG, rowF, rowE, rowD, rowC, rowB, rowA;
@@ -42,9 +41,9 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
         setContentView(R.layout.activity_fiest_booking_ticket_flow);
 
         // Initialize views
-        logoImage = findViewById(R.id.logo_image);
         cinemaIcon = findViewById(R.id.cinema_icon);
         screenImage = findViewById(R.id.screen_image);
+        moviePoster = findViewById(R.id.movie_poster);
         timerButton = findViewById(R.id.timer_button);
         timerText = findViewById(R.id.timer_text);
         continueButton = findViewById(R.id.continue_button);
@@ -64,42 +63,59 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
 
         selectedSeats = new ArrayList<>();
 
-        // Load images
-        Glide.with(this)
-                .load(R.drawable.logo)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(logoImage);
-        Glide.with(this)
-                .load(R.drawable.cinema_icon)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(cinemaIcon);
-        Glide.with(this)
-                .load(R.drawable.lineok)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .into(screenImage);
-
         // Retrieve data from Intent with defaults
-        final String movieTitle;
-        final String selectedTheater;
-        final String selectedDateStr;
-        final String selectedShowtime;
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            movieTitle = extras.getString("movie_title", "Unknown Movie");
-            selectedTheater = extras.getString("selected_theater", "Gandaria City Cinema");
-            selectedDateStr = extras.getString("selected_date", "12 Sep");
-            selectedShowtime = extras.getString("selected_showtime", "14:45 WIB");
-        } else {
-            movieTitle = "Unknown Movie";
-            selectedTheater = "Gandaria City Cinema";
-            selectedDateStr = "12 Sep";
-            selectedShowtime = "14:45 WIB";
-        }
+        final String movieTitle = extras != null ? extras.getString("movie_title", "Unknown Movie") : "Unknown Movie";
+        final String selectedTheater = extras != null ? extras.getString("selected_theater", "Gandaria City Cinema") : "Gandaria City Cinema";
+        final String selectedDateStr = extras != null ? extras.getString("selected_date", "12 Sep") : "12 Sep";
+        final String selectedShowtime = extras != null ? extras.getString("selected_showtime", "14:45 WIB") : "14:45 WIB";
+        final String posterUrl = extras != null ? extras.getString("poster_path", "") : "";
+        Log.d("FiestBookingTicketFlow", "Movie title received: '" + movieTitle + "', Poster URL: '" + posterUrl + "'");
+
         cinemaName.setText(selectedTheater);
         cinemaDate.setText(selectedDateStr + ", " + selectedShowtime);
+
+        // Load logo image
+        try {
+            Glide.with(this)
+                    .load(R.drawable.logo)
+                    .centerCrop()
+                    .into(logoImage);
+        } catch (Exception e) {
+            Log.e("FiestBookingTicketFlow", "Failed to load logo", e);
+        }
+
+        // Load cinema icon
+        try {
+            Glide.with(this)
+                    .load(R.drawable.cinema_icon)
+                    .centerCrop()
+                    .into(cinemaIcon);
+        } catch (Exception e) {
+            Log.e("FiestBookingTicketFlow", "Failed to load cinema icon", e);
+        }
+
+        // Load screen image
+        try {
+            Glide.with(this)
+                    .load(R.drawable.lineok)
+                    .centerCrop()
+                    .into(screenImage);
+        } catch (Exception e) {
+            Log.e("FiestBookingTicketFlow", "Failed to load screen image", e);
+        }
+
+        // Load movie poster
+        try {
+            Glide.with(this)
+                    .load(posterUrl.isEmpty() ? R.drawable.placeholder_poster : posterUrl)
+                    .placeholder(R.drawable.placeholder_poster)
+                    .error(R.drawable.placeholder_poster)
+                    .centerCrop()
+                    .into(moviePoster);
+        } catch (Exception e) {
+            Log.e("FiestBookingTicketFlow", "Failed to load movie poster", e);
+        }
 
         // Start countdown timer
         startCountdownTimer();
@@ -122,7 +138,6 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
 
                 // Populate TicketOrder
                 order.setMovieTitle(movieTitle);
-                String posterUrl = getPosterUrlForMovie(movieTitle);
                 order.setMoviePosterUrl(posterUrl);
                 order.setMovieRating("PG-13");
                 order.setMovieDuration("2h 44m");
@@ -151,20 +166,6 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
         });
     }
 
-    private String getPosterUrlForMovie(String movieTitle) {
-        if (movieTitle != null) {
-            switch (movieTitle.toLowerCase()) {
-                case "a haunting in venice":
-                    return "https://image.tmdb.org/t/p/w500/1Xgjl22MkAZC2Apj135jEYhS0qO.jpg";
-                case "oppenheimer":
-                    return "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg";
-                default:
-                    return "https://image.tmdb.org/t/p/w500/placeholder.jpg";
-            }
-        }
-        return "https://image.tmdb.org/t/p/w500/placeholder.jpg";
-    }
-
     private String getSelectedRow() {
         if (!selectedSeats.isEmpty()) {
             String seatLabel = selectedSeats.get(0).getText().toString();
@@ -174,7 +175,6 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     }
 
     private void startCountdownTimer() {
-        // Start a 2-minute timer to match "1:59" initial display
         long timeRemainingMillis = 2 * 60 * 1000; // 2 minutes
         countDownTimer = new CountDownTimer(timeRemainingMillis, 1000) {
             @Override

@@ -44,6 +44,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
             bindData(order);
             setupListeners();
         } else {
+            Log.e("OrderSummaryActivity", "No order data received");
             Toast.makeText(this, "No order data received", Toast.LENGTH_SHORT).show();
             finish();
         }
@@ -59,15 +60,16 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         // Load movie poster
         String posterUrl = order.getMoviePosterUrl();
-        Log.d("OrderSummaryActivity", "Loading movie poster URL: " + posterUrl);
-        if (posterUrl != null && !posterUrl.isEmpty()) {
+        Log.d("OrderSummaryActivity", "Received movie poster URL: " + posterUrl);
+        if (posterUrl != null && !posterUrl.isEmpty() && !posterUrl.contains("placeholder")) {
             Glide.with(this)
                     .load(posterUrl)
                     .placeholder(R.drawable.placeholder_poster)
                     .error(R.drawable.placeholder_poster)
+                    .centerCrop()
                     .into(binding.moviePoster);
         } else {
-            Log.w("OrderSummaryActivity", "Movie poster URL is null or empty");
+            Log.w("OrderSummaryActivity", "Invalid or missing poster URL: " + posterUrl);
             binding.moviePoster.setImageResource(R.drawable.placeholder_poster);
         }
 
@@ -294,8 +296,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     }
 
     private String formatCurrency(double amount) {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
-        return formatter.format(amount).replace("Rp", "IDR ");
+        NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("id", "ID"));
+        return "IDR " + formatter.format(amount).replace(",", ".");
     }
 
     @Override

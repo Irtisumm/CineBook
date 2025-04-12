@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- App-specific external storage (recommended for security) -->
+    <external-files-path
+        name="pdfs"
+        path="Download/" />
+
+    <!-- Public external storage (be cautious with this) -->
+    <external-path
+        name="public_download"
+        path="Download/" />
+
+</paths>
