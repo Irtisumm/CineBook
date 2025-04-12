@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -57,17 +58,24 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 order.getMovieScore(), order.getMovieRatingsCount()));
 
         // Load movie poster
-        Glide.with(this)
-                .load("https://picsum.photos/200/300")
-                .placeholder(R.drawable.placeholder_poster)
-                .error(R.drawable.placeholder_poster)
-                .into(binding.moviePoster);
+        String posterUrl = order.getMoviePosterUrl();
+        Log.d("OrderSummaryActivity", "Loading movie poster URL: " + posterUrl);
+        if (posterUrl != null && !posterUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(posterUrl)
+                    .placeholder(R.drawable.placeholder_poster)
+                    .error(R.drawable.placeholder_poster)
+                    .into(binding.moviePoster);
+        } else {
+            Log.w("OrderSummaryActivity", "Movie poster URL is null or empty");
+            binding.moviePoster.setImageResource(R.drawable.placeholder_poster);
+        }
 
         // Order Summary - Tickets
         binding.ticketCount.setText(String.format(Locale.getDefault(), "x%d", order.getTicketCount()));
         binding.ticketType.setText("Regular Ticket");
         binding.ticketSeats.setText(String.join(", ", order.getSelectedSeats()));
-        binding.ticketPrice.setText(formatCurrency(order.getTicketPrice()));
+        binding.ticketPrice.setText(formatCurrency(order.getTicketPrice() / order.getTicketCount()));
 
         // Payment Summary
         binding.paymentTicketPrice.setText(formatCurrency(order.getTicketPrice()));
@@ -82,8 +90,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
     private void setupListeners() {
         // Pay Now Button
-        // Inside setupListeners() method, update the payNowButton.setOnClickListener
-        // In OrderSummaryActivity.java, update the payNowButton listener
         binding.payNowButton.setOnClickListener(v -> {
             if (selectedPaymentMethod.equals("Select a payment method")) {
                 Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT).show();
@@ -96,11 +102,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
                         Toast.makeText(this, "Payment successful!", Toast.LENGTH_SHORT).show();
                         TicketOrder order = getIntent().getParcelableExtra("ticketOrder");
                         if (order != null) {
-                            // Update with new fields if not already set
-                            order.setCinemaLocation(order.getCinemaLocation() != null ? order.getCinemaLocation() : "Gandaria City");
-                            order.setShowTime(order.getShowTime() != null ? order.getShowTime() : "Wed, 12 Sep 14:45");
-                            order.setStudio(order.getStudio() != null ? order.getStudio() : "4");
-                            order.setRow(order.getRow() != null ? order.getRow() : "A");
                             order.setPaymentMethod(selectedPaymentMethod);
                         }
                         Intent intent = new Intent(OrderSummaryActivity.this, MovieTicketActivity.class);
@@ -129,7 +130,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 .setTitle("Select Payment Method")
                 .setItems(paymentMethods.toArray(new String[0]), (dialog, which) -> {
                     if (which == paymentMethods.size() - 1) {
-                        // Add New Card
                         showAddCardDialog();
                     } else {
                         selectedPaymentMethod = paymentMethods.get(which);
@@ -141,16 +141,12 @@ public class OrderSummaryActivity extends AppCompatActivity {
     }
 
     private void showAddCardDialog() {
-        // Create dialog with custom layout
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add New Card");
-
-        // Inflate custom layout
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_add_card, null);
         builder.setView(dialogView);
 
-        // Initialize input fields
         EditText cardNumberInput = dialogView.findViewById(R.id.card_number_input);
         EditText expiryDateInput = dialogView.findViewById(R.id.expiry_date_input);
         EditText cvvInput = dialogView.findViewById(R.id.cvv_input);
@@ -158,7 +154,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
         Button saveButton = dialogView.findViewById(R.id.save_card_button);
         Button cancelButton = dialogView.findViewById(R.id.cancel_card_button);
 
-        // Format card number (spaces every 4 digits)
         cardNumberInput.addTextChangedListener(new TextWatcher() {
             private boolean isFormatting;
             private int cursorPosition;
@@ -179,14 +174,11 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 String input = s.toString().replaceAll("[^0-9]", "");
                 StringBuilder formatted = new StringBuilder();
                 for (int i = 0; i < input.length(); i++) {
-                    if (i > 0 && i % 4 == 0) {
-                        formatted.append(" ");
-                    }
+                    if (i > 0 && i % 4 == 0) formatted.append(" ");
                     formatted.append(input.charAt(i));
                 }
 
                 cardNumberInput.setText(formatted.toString());
-                // Adjust cursor position
                 int newLength = formatted.length();
                 if (cursorPosition > newLength) {
                     cursorPosition = newLength;
@@ -199,7 +191,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
             }
         });
 
-        // Format expiry date (MM/YY)
         expiryDateInput.addTextChangedListener(new TextWatcher() {
             private boolean isFormatting;
 
@@ -230,17 +221,14 @@ public class OrderSummaryActivity extends AppCompatActivity {
             }
         });
 
-        // Create dialog
         AlertDialog dialog = builder.create();
 
-        // Save button
         saveButton.setOnClickListener(v -> {
             String cardNumber = cardNumberInput.getText().toString().replaceAll("[^0-9]", "");
             String expiryDate = expiryDateInput.getText().toString();
             String cvv = cvvInput.getText().toString();
             String cardholderName = cardholderNameInput.getText().toString().trim();
 
-            // Validate inputs
             if (cardNumber.length() != 16) {
                 cardNumberInput.setError("Enter a 16-digit card number");
                 return;
@@ -249,7 +237,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 expiryDateInput.setError("Enter valid expiry date (MM/YY)");
                 return;
             }
-            // Check if expiry is in the future
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("MM/yy", Locale.US);
                 sdf.setLenient(false);
@@ -273,7 +260,6 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 return;
             }
 
-            // Format card number for display
             String lastFour = cardNumber.substring(cardNumber.length() - 4);
             selectedPaymentMethod = String.format("Card **** **** **** %s", lastFour);
             binding.paymentMethod.setText(selectedPaymentMethod);
@@ -281,10 +267,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        // Cancel button
         cancelButton.setOnClickListener(v -> dialog.dismiss());
-
-        // Show dialog
         dialog.show();
     }
 

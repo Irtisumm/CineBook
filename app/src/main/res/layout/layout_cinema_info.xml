@@ -15,7 +15,8 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="49dp"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:src="@drawable/cinema_icon" />
 
     <LinearLayout
         android:id="@+id/cinema_details"
@@ -49,7 +50,7 @@
         android:id="@+id/timer_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/s2466fdsw1cr28beff3ff"
+        android:background="@drawable/cr4b2466fd"
         android:paddingHorizontal="12dp"
         android:paddingVertical="8dp"
         android:clickable="true"
@@ -61,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1:59"
-            android:textColor="#2466FD"
+            android:textColor="#FFFFFF"
             android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

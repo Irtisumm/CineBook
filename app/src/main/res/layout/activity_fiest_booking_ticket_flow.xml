@@ -1,61 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
-    <!-- ScrollView for upper content -->
     <ScrollView
-        android:id="@+id/scroll_view"
+        android:id="@+id/main_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:background="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@id/seat_grid_container"
-        app:layout_constraintTop_toTopOf="parent">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="32dp">
 
             <!-- Header (Logo) -->
-            <include layout="@layout/layout_header" />
+            <include
+                layout="@layout/layout_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="20dp" />
 
             <!-- Cinema Info (Cinema Name, Date, Timer) -->
-            <include layout="@layout/layout_cinema_info" />
+            <include
+                layout="@layout/layout_cinema_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginTop="16dp" />
 
             <!-- Seat Legend -->
-            <include layout="@layout/layout_seat_legend" />
+            <include
+                layout="@layout/layout_seat_legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginTop="16dp" />
 
             <!-- Screen Indicator -->
-            <include layout="@layout/layout_screen" />
+            <include
+                layout="@layout/layout_screen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="18dp"
+                android:layout_marginTop="16dp" />
+
+            <!-- Seat Grid -->
+            <include
+                layout="@layout/layout_seat_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp" />
+
+            <!-- Footer (Subtotal, Continue Button) -->
+            <include
+                layout="@layout/layout_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- Seat Grid -->
-    <include
-        android:id="@+id/seat_grid_container"
-        layout="@layout/layout_seat_grid"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/footer_container"
-        app:layout_constraintTop_toBottomOf="@id/scroll_view"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <!-- Footer (Subtotal, Continue Button) -->
-    <include
-        android:id="@+id/footer_container"
-        layout="@layout/layout_footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

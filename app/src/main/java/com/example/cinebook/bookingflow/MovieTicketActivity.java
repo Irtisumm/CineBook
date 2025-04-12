@@ -37,7 +37,7 @@ public class MovieTicketActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_ticket);
 
-        // Initialize views with updated IDs
+        // Initialize views
         appLogoImageView = findViewById(R.id.app_logo);
         activeTicketTitleTextView = findViewById(R.id.active_ticket_title);
         moviePosterImageView = findViewById(R.id.movie_poster);
@@ -70,34 +70,34 @@ public class MovieTicketActivity extends AppCompatActivity {
 
         // Load app logo
         Glide.with(this)
-                .load(R.mipmap.ic_launcher) // Replace with actual logo resource or URL
+                .load(R.mipmap.ic_launcher)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(appLogoImageView);
 
-        // Load movie poster with debugging
+        // Load movie poster
         String posterUrl = order.getMoviePosterUrl();
-        Log.d("MovieTicketActivity", "Movie poster URL: " + posterUrl);
+        Log.d("MovieTicketActivity", "Loading movie poster URL: " + posterUrl);
         if (posterUrl != null && !posterUrl.isEmpty()) {
             Glide.with(this)
                     .load(posterUrl)
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.drawable.default_poster) // Ensure default_poster exists in res/drawable
+                    .placeholder(R.drawable.placeholder_poster)
+                    .error(R.drawable.placeholder_poster)
                     .into(moviePosterImageView);
         } else {
-            Log.w("MovieTicketActivity", "Movie poster URL is null or empty, using default");
-            moviePosterImageView.setImageResource(R.drawable.default_poster);
+            Log.w("MovieTicketActivity", "Movie poster URL is null or empty");
+            moviePosterImageView.setImageResource(R.drawable.placeholder_poster);
         }
 
-        // Generate booking code once for consistency
+        // Generate booking code
         String bookingCode = generateBookingCode();
 
-        // Set ticket details from TicketOrder
+        // Set ticket details
         bookingCodeTextView.setText("Booking Code: #" + bookingCode);
         movieTitleTextView.setText(order.getMovieTitle());
         cinemaLocationTextView.setText(order.getCinemaLocation() != null ? order.getCinemaLocation() : "Unknown");
         showTimeTextView.setText(order.getShowTime() != null ? order.getShowTime() : "Unknown");
-        ticketClassTextView.setText("Regular"); // Hardcoded as per XML
+        ticketClassTextView.setText("Regular");
         studioNumberTextView.setText(order.getStudio() != null ? order.getStudio() : "Unknown");
         rowNumberTextView.setText(order.getRow() != null ? order.getRow() : "Unknown");
         seatNumbersTextView.setText(String.join(", ", order.getSelectedSeats()));
@@ -113,7 +113,7 @@ public class MovieTicketActivity extends AppCompatActivity {
             qrCodeImageView.setImageBitmap(qrBitmap);
         } else {
             Log.e("MovieTicketActivity", "Failed to generate QR code");
-            qrCodeImageView.setImageResource(R.mipmap.ic_launcher); // Fallback
+            qrCodeImageView.setImageResource(R.drawable.placeholder_poster);
         }
 
         // Set barcode number
@@ -132,12 +132,10 @@ public class MovieTicketActivity extends AppCompatActivity {
         }
     }
 
-    // Generate a dummy booking code (replace with actual logic)
     private String generateBookingCode() {
         return String.valueOf((int) (Math.random() * 100000));
     }
 
-    // Generate a dummy barcode number (replace with actual logic)
     private String generateBarcodeNumber() {
         return String.format("%05d %06d %08d",
                 (int) (Math.random() * 100000),

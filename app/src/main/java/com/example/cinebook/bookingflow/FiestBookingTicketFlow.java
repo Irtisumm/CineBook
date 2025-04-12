@@ -41,7 +41,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fiest_booking_ticket_flow);
 
-        // Initialize views using findViewById
+        // Initialize views
         logoImage = findViewById(R.id.logo_image);
         cinemaIcon = findViewById(R.id.cinema_icon);
         screenImage = findViewById(R.id.screen_image);
@@ -66,30 +66,43 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
 
         // Load images
         Glide.with(this)
-                .load("https://example.com/logo.png") // Replace with your URL or drawable
+                .load(R.drawable.logo)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
                 .into(logoImage);
         Glide.with(this)
-                .load("https://example.com/cinema_icon.png") // Replace with your URL or drawable
+                .load(R.drawable.cinema_icon)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
                 .into(cinemaIcon);
         Glide.with(this)
-                .load("https://example.com/screen.png") // Replace with your URL or drawable
+                .load(R.drawable.lineok)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
                 .into(screenImage);
 
-        // Retrieve data from Intent
+        // Retrieve data from Intent with defaults
+        final String movieTitle;
+        final String selectedTheater;
+        final String selectedDateStr;
+        final String selectedShowtime;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String movieTitle = extras.getString("movie_title", "Unknown Movie");
-            String selectedTheater = extras.getString("selected_theater", "N/A");
-            String selectedDateStr = extras.getString("selected_date", "N/A");
-            String selectedShowtime = extras.getString("selected_showtime", "N/A");
-            cinemaName.setText(selectedTheater);
-            cinemaDate.setText(selectedDateStr + ", " + selectedShowtime);
-
-            // Start countdown timer for showtime
-            startCountdownTimer(selectedDateStr, selectedShowtime);
+            movieTitle = extras.getString("movie_title", "Unknown Movie");
+            selectedTheater = extras.getString("selected_theater", "Gandaria City Cinema");
+            selectedDateStr = extras.getString("selected_date", "12 Sep");
+            selectedShowtime = extras.getString("selected_showtime", "14:45 WIB");
         } else {
-            timerText.setText("N/A");
+            movieTitle = "Unknown Movie";
+            selectedTheater = "Gandaria City Cinema";
+            selectedDateStr = "12 Sep";
+            selectedShowtime = "14:45 WIB";
         }
+        cinemaName.setText(selectedTheater);
+        cinemaDate.setText(selectedDateStr + ", " + selectedShowtime);
+
+        // Start countdown timer
+        startCountdownTimer();
 
         // Initialize seat grid
         setupSeatGrid();
@@ -108,15 +121,19 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                 TicketOrder order = new TicketOrder();
 
                 // Populate TicketOrder
-                String movieTitle = getIntent().getStringExtra("movie_title");
-                order.setMovieTitle(movieTitle != null ? movieTitle : "Unknown Movie");
-                order.setMoviePosterUrl("https://example.com/poster.jpg");
+                order.setMovieTitle(movieTitle);
+                String posterUrl = getPosterUrlForMovie(movieTitle);
+                order.setMoviePosterUrl(posterUrl);
                 order.setMovieRating("PG-13");
                 order.setMovieDuration("2h 44m");
                 order.setMovieScore(9.8);
                 order.setMovieRatingsCount(192);
+                order.setCinemaLocation(selectedTheater);
+                order.setShowTime(selectedDateStr + ", " + selectedShowtime);
+                order.setStudio("4");
+                order.setRow(getSelectedRow());
 
-                // Convert selectedSeats (List<TextView>) to List<String> for TicketOrder
+                // Convert selectedSeats to List<String>
                 List<String> seatLabels = new ArrayList<>();
                 for (TextView seat : selectedSeats) {
                     seatLabels.add(seat.getText().toString());
@@ -124,8 +141,8 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                 order.setSelectedSeats(seatLabels);
                 order.setTicketCount(seatLabels.size());
                 order.setTicketPrice(subtotal);
-                order.setTax(subtotal * 0.1); // 10% tax
-                order.setPaymentMethod("**** **** **** 2157");
+                order.setTax(subtotal * 0.1);
+                order.setPaymentMethod("");
 
                 // Attach TicketOrder to Intent
                 intent.putExtra("ticketOrder", order);
@@ -134,47 +151,49 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
         });
     }
 
-    private void startCountdownTimer(String selectedDate, String selectedShowtime) {
-        try {
-            // Parse date and showtime (e.g., "12 Sep" and "14:45")
-            SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM, HH:mm", Locale.getDefault());
-            String dateTimeStr = selectedDate + ", " + selectedShowtime;
-            Date showtimeDate = dateFormat.parse(dateTimeStr);
-
-            // Get current time
-            long currentTimeMillis = System.currentTimeMillis();
-            long showtimeMillis = showtimeDate.getTime();
-            long timeRemainingMillis = showtimeMillis - currentTimeMillis;
-
-            if (timeRemainingMillis > 0) {
-                // Start countdown timer
-                countDownTimer = new CountDownTimer(timeRemainingMillis, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        long minutes = (millisUntilFinished / 1000) / 60;
-                        long seconds = (millisUntilFinished / 1000) % 60;
-                        timerText.setText(String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds));
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        timerText.setText("00:00");
-                    }
-                }.start();
-            } else {
-                timerText.setText("Showtime Passed");
+    private String getPosterUrlForMovie(String movieTitle) {
+        if (movieTitle != null) {
+            switch (movieTitle.toLowerCase()) {
+                case "a haunting in venice":
+                    return "https://image.tmdb.org/t/p/w500/1Xgjl22MkAZC2Apj135jEYhS0qO.jpg";
+                case "oppenheimer":
+                    return "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg";
+                default:
+                    return "https://image.tmdb.org/t/p/w500/placeholder.jpg";
             }
-        } catch (ParseException e) {
-            timerText.setText("N/A");
-            e.printStackTrace();
         }
+        return "https://image.tmdb.org/t/p/w500/placeholder.jpg";
+    }
+
+    private String getSelectedRow() {
+        if (!selectedSeats.isEmpty()) {
+            String seatLabel = selectedSeats.get(0).getText().toString();
+            return seatLabel.substring(0, 1); // e.g., "A3" -> "A"
+        }
+        return "A";
+    }
+
+    private void startCountdownTimer() {
+        // Start a 2-minute timer to match "1:59" initial display
+        long timeRemainingMillis = 2 * 60 * 1000; // 2 minutes
+        countDownTimer = new CountDownTimer(timeRemainingMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long minutes = (millisUntilFinished / 1000) / 60;
+                long seconds = (millisUntilFinished / 1000) % 60;
+                timerText.setText(String.format(Locale.getDefault(), "%d:%02d", minutes, seconds));
+            }
+
+            @Override
+            public void onFinish() {
+                timerText.setText("0:00");
+                Toast.makeText(FiestBookingTicketFlow.this, "Booking time expired!", Toast.LENGTH_LONG).show();
+            }
+        }.start();
     }
 
     private void setupSeatGrid() {
-        // Define seat rows
         LinearLayout[] seatRows = { rowK, rowJ, rowH, rowG, rowF, rowE, rowD, rowC, rowB, rowA };
-
-        // Define resource arrays for labels and states
         int[] labelArrays = {
                 R.array.row_k_labels, R.array.row_j_labels, R.array.row_h_labels,
                 R.array.row_g_labels, R.array.row_f_labels, R.array.row_e_labels,
@@ -192,11 +211,8 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
             LinearLayout row = seatRows[i];
             String[] labels = getResources().getStringArray(labelArrays[i]);
             String[] states = getResources().getStringArray(stateArrays[i]);
-
-            // Clear existing views
             row.removeAllViews();
 
-            // Populate row dynamically
             for (int j = 0; j < labels.length; j++) {
                 String label = labels[j];
                 String state = states[j];
@@ -205,9 +221,9 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                 seatLayout.setLayoutParams(new LinearLayout.LayoutParams(
                         0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                 seatLayout.setOrientation(LinearLayout.VERTICAL);
-                seatLayout.setPadding(8, 8, 8, 8); // Increased padding for larger appearance
+                seatLayout.setPadding(8, 8, 8, 8);
                 if (j < labels.length - 1) {
-                    seatLayout.setPadding(8, 8, 16, 8); // Larger marginEnd
+                    seatLayout.setPadding(8, 8, 16, 8);
                 }
 
                 if (!label.isEmpty()) {
@@ -217,8 +233,8 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                             LinearLayout.LayoutParams.WRAP_CONTENT));
                     seatText.setText(label);
                     seatText.setTextColor(getResources().getColor(android.R.color.white));
-                    seatText.setTextSize(16); // Increased text size
-                    seatText.setPadding(12, 8, 12, 8); // Larger padding for text
+                    seatText.setTextSize(16);
+                    seatText.setPadding(12, 8, 12, 8);
                     seatLayout.addView(seatText);
 
                     switch (state) {
@@ -247,18 +263,15 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
             }
         }
 
-        // Update subtotal
         updateSubtotal();
     }
 
     private void toggleSeatSelection(LinearLayout seatLayout, TextView seatText) {
         if (selectedSeats.contains(seatText)) {
-            // Deselect
             seatLayout.setBackgroundResource(R.drawable.cr4b858f93);
             selectedSeats.remove(seatText);
             subtotal -= ticketPrice;
         } else {
-            // Select
             seatLayout.setBackgroundResource(R.drawable.cr4b2466fd);
             selectedSeats.add(seatText);
             subtotal += ticketPrice;
@@ -267,7 +280,8 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     }
 
     private void updateSubtotal() {
-        subtotalValue.setText("IDR " + subtotal);
+        String formattedSubtotal = String.format(Locale.getDefault(), "IDR %,d", subtotal).replace(",", ".");
+        subtotalValue.setText(formattedSubtotal);
     }
 
     @Override
