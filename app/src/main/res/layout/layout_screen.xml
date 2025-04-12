@@ -4,27 +4,23 @@
     android:id="@+id/screen_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:layout_marginBottom="58dp">
+    android:layout_marginBottom="58dp"
+    android:gravity="center_horizontal">
 
     <ImageView
         android:id="@+id/screen_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:src="@drawable/lineok"
         android:scaleType="fitXY" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingVertical="12dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/screen_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SCREEN"
-            android:textColor="#656E72"
-            android:textSize="12sp" />
-    </LinearLayout>
+    <!-- Centering the TextView -->
+    <TextView
+        android:id="@+id/screen_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="SCREEN"
+        android:textColor="#656E72"
+        android:textSize="12sp" />
 </RelativeLayout>

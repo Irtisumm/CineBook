@@ -1,6 +1,8 @@
 package com.example.cinebook.bookingflow;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,8 +11,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.cinebook.R;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FiestBookingTicketFlow extends AppCompatActivity {
 
@@ -23,9 +29,11 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     private TextView subtotalValue;
     private TextView cinemaName;
     private TextView cinemaDate;
+    private TextView timerText;
     private List<TextView> selectedSeats;
     private int ticketPrice = 45000; // Price per ticket in IDR
     private int subtotal = 0;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
         cinemaIcon = findViewById(R.id.cinema_icon);
         screenImage = findViewById(R.id.screen_image);
         timerButton = findViewById(R.id.timer_button);
+        timerText = findViewById(R.id.timer_text);
         continueButton = findViewById(R.id.continue_button);
         rowK = findViewById(R.id.row_k);
         rowJ = findViewById(R.id.row_j);
@@ -74,6 +83,11 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
             String selectedShowtime = extras.getString("selected_showtime", "N/A");
             cinemaName.setText(selectedTheater);
             cinemaDate.setText(selectedDateStr + ", " + selectedShowtime);
+
+            // Start countdown timer for showtime
+            startCountdownTimer(selectedDateStr, selectedShowtime);
+        } else {
+            timerText.setText("N/A");
         }
 
         // Initialize seat grid
@@ -81,8 +95,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
 
         // Timer button
         timerButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Timer button pressed: 1:59", Toast.LENGTH_SHORT).show();
-            // Add timer logic here if needed
+            Toast.makeText(this, "Showtime: " + cinemaDate.getText(), Toast.LENGTH_SHORT).show();
         });
 
         // Continue button
@@ -99,6 +112,42 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                 // Proceed to next screen or payment
             }
         });
+    }
+
+    private void startCountdownTimer(String selectedDate, String selectedShowtime) {
+        try {
+            // Parse date and showtime (e.g., "12 Sep" and "14:45")
+            SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM, HH:mm", Locale.getDefault());
+            String dateTimeStr = selectedDate + ", " + selectedShowtime;
+            Date showtimeDate = dateFormat.parse(dateTimeStr);
+
+            // Get current time
+            long currentTimeMillis = System.currentTimeMillis();
+            long showtimeMillis = showtimeDate.getTime();
+            long timeRemainingMillis = showtimeMillis - currentTimeMillis;
+
+            if (timeRemainingMillis > 0) {
+                // Start countdown timer
+                countDownTimer = new CountDownTimer(timeRemainingMillis, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        long minutes = (millisUntilFinished / 1000) / 60;
+                        long seconds = (millisUntilFinished / 1000) % 60;
+                        timerText.setText(String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        timerText.setText("00:00");
+                    }
+                }.start();
+            } else {
+                timerText.setText("Showtime Passed");
+            }
+        } catch (ParseException e) {
+            timerText.setText("N/A");
+            e.printStackTrace();
+        }
     }
 
     private void setupSeatGrid() {
@@ -136,9 +185,9 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                 seatLayout.setLayoutParams(new LinearLayout.LayoutParams(
                         0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
                 seatLayout.setOrientation(LinearLayout.VERTICAL);
-                seatLayout.setPadding(0, 6, 0, 6);
+                seatLayout.setPadding(8, 8, 8, 8); // Increased padding for larger appearance
                 if (j < labels.length - 1) {
-                    seatLayout.setPadding(0, 6, 8, 6); // MarginEnd for all but last
+                    seatLayout.setPadding(8, 8, 16, 8); // Larger marginEnd
                 }
 
                 if (!label.isEmpty()) {
@@ -148,8 +197,8 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                             LinearLayout.LayoutParams.WRAP_CONTENT));
                     seatText.setText(label);
                     seatText.setTextColor(getResources().getColor(android.R.color.white));
-                    seatText.setTextSize(12);
-                    seatText.setPadding(8, 0, 8, 0);
+                    seatText.setTextSize(16); // Increased text size
+                    seatText.setPadding(12, 8, 12, 8); // Larger padding for text
                     seatLayout.addView(seatText);
 
                     switch (state) {
@@ -199,5 +248,13 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
 
     private void updateSubtotal() {
         subtotalValue.setText("IDR " + subtotal);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 }

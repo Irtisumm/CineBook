@@ -1,60 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/seat_grid_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="64dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- Row K -->
-    <include
+    <LinearLayout
         android:id="@+id/row_k"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row J -->
-    <include
+    <LinearLayout
         android:id="@+id/row_j"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row H -->
-    <include
+    <LinearLayout
         android:id="@+id/row_h"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row G -->
-    <include
+    <LinearLayout
         android:id="@+id/row_g"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row F -->
-    <include
+    <LinearLayout
         android:id="@+id/row_f"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row E -->
-    <include
+    <LinearLayout
         android:id="@+id/row_e"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row D -->
-    <include
+    <LinearLayout
         android:id="@+id/row_d"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row C -->
-    <include
+    <LinearLayout
         android:id="@+id/row_c"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row B -->
-    <include
+    <LinearLayout
         android:id="@+id/row_b"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
-    <!-- Row A -->
-    <include
+    <LinearLayout
         android:id="@+id/row_a"
-        layout="@layout/layout_seat_row" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
 </LinearLayout>
