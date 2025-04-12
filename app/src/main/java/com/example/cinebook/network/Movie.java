@@ -3,16 +3,11 @@ package com.example.cinebook.network;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Movie implements Parcelable {
     private int id;
     private String title;
     private String overview;
-    @SerializedName("poster_path") // Matches TMDb JSON field
-    private String posterPath;
-    @SerializedName("vote_average")
-    private double voteAverage;
+    private String poster_path;
 
     public Movie() {}
 
@@ -20,8 +15,7 @@ public class Movie implements Parcelable {
         id = in.readInt();
         title = in.readString();
         overview = in.readString();
-        posterPath = in.readString();
-        voteAverage = in.readDouble();
+        poster_path = in.readString();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -36,6 +30,38 @@ public class Movie implements Parcelable {
         }
     };
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public String getPosterPath() {
+        return poster_path;
+    }
+
+    public void setPosterPath(String poster_path) {
+        this.poster_path = poster_path;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -46,19 +72,6 @@ public class Movie implements Parcelable {
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(overview);
-        dest.writeString(posterPath);
-        dest.writeDouble(voteAverage);
+        dest.writeString(poster_path);
     }
-
-    // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-    public String getOverview() { return overview; }
-    public void setOverview(String overview) { this.overview = overview; }
-    public String getPosterPath() { return posterPath; }
-    public void setPosterPath(String posterPath) { this.posterPath = posterPath; }
-    public double getVoteAverage() { return voteAverage; }
-    public void setVoteAverage(double voteAverage) { this.voteAverage = voteAverage; }
 }

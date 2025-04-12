@@ -8,4 +8,7 @@
         <item>Kota Kinabalu</item>
         <item>Kuching</item>
     </string-array>
+    <string name="tmdb_api_key">494b3fe65fb0e929af45cab610c73858</string>
+    <string name="continue_button_text">Continue</string>
+    <string name="movie_rating">PG-13</string>
 </resources>

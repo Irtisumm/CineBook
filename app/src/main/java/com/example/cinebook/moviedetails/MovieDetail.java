@@ -1,5 +1,6 @@
 package com.example.cinebook.moviedetails;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,11 +26,11 @@ import java.util.Random;
 public class MovieDetail extends AppCompatActivity {
 
     private Activity11MovieDetailBinding binding;
-    private int selectedDateIndex = -1; // Track selected date
-    private int selectedTheaterIndex = -1; // Track selected theater
-    private String selectedShowtime = null; // Track selected showtime
-    private final List<View> dateViews = new ArrayList<>(); // Store date views for updating UI
-    private final List<LayoutTheaterItemBinding> theaterBindings = new ArrayList<>(); // Store theater bindings
+    private int selectedDateIndex = -1;
+    private int selectedTheaterIndex = -1;
+    private String selectedShowtime = null;
+    private final List<View> dateViews = new ArrayList<>();
+    private final List<LayoutTheaterItemBinding> theaterBindings = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +58,12 @@ public class MovieDetail extends AppCompatActivity {
     }
 
     private void populateMovieData(Movie movie) {
-        // Movie Header
         Glide.with(this)
                 .load("https://image.tmdb.org/t/p/w500" + movie.getPosterPath())
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.error)
                 .into(binding.layoutMovieHeader.imageMoviePoster);
 
-        // Load static icons
         Glide.with(this)
                 .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/23btlndi_expires_30_days.png")
                 .into(binding.layoutMovieHeader.iconBack);
@@ -75,14 +74,12 @@ public class MovieDetail extends AppCompatActivity {
                 .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/3bc558bs_expires_30_days.png")
                 .into(binding.layoutMovieHeader.iconFavorite);
 
-        // Movie Details
         binding.layoutMovieDetails.textDetailsTitle.setText(movie.getTitle());
         binding.layoutMovieDetails.textDetailsDescription.setText(movie.getOverview());
         Glide.with(this)
                 .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/5voi2tbq_expires_30_days.png")
                 .into(binding.layoutMovieDetails.dividerDetails);
 
-        // Showtimes Icons
         Glide.with(this)
                 .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/5ngiab93_expires_30_days.png")
                 .into(binding.layoutShowtimes.iconTheatersDropdown);
@@ -117,14 +114,12 @@ public class MovieDetail extends AppCompatActivity {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        // Select the first date by default
         selectDate(0);
     }
 
     private void selectDate(int index) {
         if (selectedDateIndex == index) return;
 
-        // Reset previous selection
         if (selectedDateIndex >= 0 && selectedDateIndex < dateViews.size()) {
             View prevDateView = dateViews.get(selectedDateIndex);
             TextView prevDayText = prevDateView.findViewById(R.id.text_day);
@@ -134,7 +129,6 @@ public class MovieDetail extends AppCompatActivity {
             prevDateText.setTextColor(ContextCompat.getColor(this, R.color.black_191b1c));
         }
 
-        // Highlight new selection
         View dateView = dateViews.get(index);
         TextView dayText = dateView.findViewById(R.id.text_day);
         TextView dateText = dateView.findViewById(R.id.text_date);
@@ -144,9 +138,8 @@ public class MovieDetail extends AppCompatActivity {
 
         selectedDateIndex = index;
 
-        // Reset showtime selection when date changes
         selectedShowtime = null;
-        binding.buttonContinue.setEnabled(false); // Disable button
+        binding.buttonContinue.setEnabled(false);
         updateTheaterShowtimes();
     }
 
@@ -166,7 +159,6 @@ public class MovieDetail extends AppCompatActivity {
             theaterBinding.textTheaterDistance.setText(theater.distance);
             theaterBinding.textTheaterAddress.setText(theater.address);
 
-            // Load separator and arrow icons
             Glide.with(this)
                     .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/ez6mxp5r_expires_30_days.png")
                     .into(theaterBinding.iconTheaterSeparator);
@@ -174,13 +166,12 @@ public class MovieDetail extends AppCompatActivity {
                     .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/46ugn84n_expires_30_days.png")
                     .into(theaterBinding.iconTheaterArrow);
 
-            // Add showtimes
             LinearLayout showtimesContainer = new LinearLayout(this);
             showtimesContainer.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             showtimesContainer.setOrientation(LinearLayout.VERTICAL);
-            showtimesContainer.setTag("showtimes_" + i); // Tag for updating
+            showtimesContainer.setTag("showtimes_" + i);
 
             addShowtimesSection(showtimesContainer, "REGULAR", "IDR 40,000", theater.regularShowtimes, i);
             addShowtimesSection(showtimesContainer, "IMAX", "IDR 55,000", theater.imaxShowtimes, i);
@@ -188,14 +179,12 @@ public class MovieDetail extends AppCompatActivity {
 
             theaterBinding.layoutTheaterDetails.addView(showtimesContainer);
 
-            // Theater selection
             final int index = i;
             theaterBinding.getRoot().setOnClickListener(v -> selectTheater(index));
 
             theaterBindings.add(theaterBinding);
             theatersContainer.addView(theaterBinding.getRoot());
 
-            // Add divider
             if (i < theaters.size() - 1) {
                 ImageView divider = new ImageView(this);
                 divider.setLayoutParams(new LinearLayout.LayoutParams(
@@ -208,30 +197,26 @@ public class MovieDetail extends AppCompatActivity {
             }
         }
 
-        // Select the first theater by default
         selectTheater(0);
     }
 
     private void selectTheater(int index) {
         if (selectedTheaterIndex == index) return;
 
-        // Reset previous selection
         if (selectedTheaterIndex >= 0 && selectedTheaterIndex < theaterBindings.size()) {
             LayoutTheaterItemBinding prevBinding = theaterBindings.get(selectedTheaterIndex);
             prevBinding.getRoot().setBackgroundResource(0);
             prevBinding.textTheaterName.setTextColor(ContextCompat.getColor(this, R.color.black_191b1c));
         }
 
-        // Highlight new selection
         LayoutTheaterItemBinding theaterBinding = theaterBindings.get(index);
         theaterBinding.getRoot().setBackgroundResource(R.drawable.selected_background);
         theaterBinding.textTheaterName.setTextColor(ContextCompat.getColor(this, R.color.selected_text));
 
         selectedTheaterIndex = index;
 
-        // Reset showtime selection when theater changes
         selectedShowtime = null;
-        binding.buttonContinue.setEnabled(false); // Disable button
+        binding.buttonContinue.setEnabled(false);
         updateTheaterShowtimes();
     }
 
@@ -243,7 +228,6 @@ public class MovieDetail extends AppCompatActivity {
         section.setOrientation(LinearLayout.VERTICAL);
         section.setPadding(0, 0, 0, 28);
 
-        // Header
         LinearLayout header = new LinearLayout(this);
         header.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -273,7 +257,6 @@ public class MovieDetail extends AppCompatActivity {
 
         section.addView(header);
 
-        // Showtimes
         LinearLayout timesRow = new LinearLayout(this);
         timesRow.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -288,7 +271,7 @@ public class MovieDetail extends AppCompatActivity {
             timeLayout.setBackgroundResource(R.drawable.scbcfd1sw1cr4);
             timeLayout.setPadding(0, 8, 0, 8);
             timeLayout.setGravity(android.view.Gravity.CENTER);
-            timeLayout.setTag("time_" + theaterIndex + "_" + title + "_" + time); // Unique tag
+            timeLayout.setTag("time_" + theaterIndex + "_" + title + "_" + time);
 
             TextView timeView = new TextView(this);
             timeView.setId(R.id.showtime_text);
@@ -303,7 +286,6 @@ public class MovieDetail extends AppCompatActivity {
             timeLayout.addView(timeView);
             timesRow.addView(timeLayout);
 
-            // Showtime selection
             timeLayout.setOnClickListener(v -> selectShowtime(theaterIndex, title, time));
 
             if (i < times.size() - 1) {
@@ -319,10 +301,9 @@ public class MovieDetail extends AppCompatActivity {
 
     private void selectShowtime(int theaterIndex, String showType, String time) {
         if (selectedTheaterIndex != theaterIndex) {
-            selectTheater(theaterIndex); // Ensure the correct theater is selected
+            selectTheater(theaterIndex);
         }
 
-        // Reset previous showtime selection
         if (selectedShowtime != null) {
             View prevTimeView = binding.layoutShowtimes.layoutTheatersList
                     .findViewWithTag("time_" + selectedTheaterIndex + "_" + selectedShowtime);
@@ -335,7 +316,6 @@ public class MovieDetail extends AppCompatActivity {
             }
         }
 
-        // Highlight new showtime
         String tag = "time_" + theaterIndex + "_" + showType + "_" + time;
         View timeView = binding.layoutShowtimes.layoutTheatersList.findViewWithTag(tag);
         if (timeView != null) {
@@ -346,12 +326,11 @@ public class MovieDetail extends AppCompatActivity {
             }
         }
 
-        selectedShowtime = showType + "_" + time; // Store show type to ensure uniqueness
-        binding.buttonContinue.setEnabled(true); // Enable button
+        selectedShowtime = showType + "_" + time;
+        binding.buttonContinue.setEnabled(true);
     }
 
     private void updateTheaterShowtimes() {
-        // Show showtimes only for the selected theater
         for (int i = 0; i < theaterBindings.size(); i++) {
             LinearLayout showtimesContainer = (LinearLayout) theaterBindings.get(i).layoutTheaterDetails
                     .findViewWithTag("showtimes_" + i);
@@ -362,7 +341,6 @@ public class MovieDetail extends AppCompatActivity {
     }
 
     private void onContinueClicked() {
-        // Log the selected date, theater, and showtime
         String selectedDate = "";
         if (selectedDateIndex >= 0 && selectedDateIndex < dateViews.size()) {
             TextView dateText = dateViews.get(selectedDateIndex).findViewById(R.id.text_date);
@@ -371,9 +349,15 @@ public class MovieDetail extends AppCompatActivity {
         }
 
         String selectedTheater = "";
+        String selectedTheaterAddress = "";
+        String selectedTheaterDistance = "";
         if (selectedTheaterIndex >= 0 && selectedTheaterIndex < theaterBindings.size()) {
             selectedTheater = theaterBindings.get(selectedTheaterIndex).textTheaterName.getText().toString();
+            selectedTheaterAddress = theaterBindings.get(selectedTheaterIndex).textTheaterAddress.getText().toString();
+            selectedTheaterDistance = theaterBindings.get(selectedTheaterIndex).textTheaterDistance.getText().toString();
         }
+
+        Movie movie = getIntent().getParcelableExtra("movie");
 
         String logMessage = String.format(
                 "Booking: Date=%s, Theater=%s, Showtime=%s",
@@ -381,7 +365,14 @@ public class MovieDetail extends AppCompatActivity {
         );
         Log.d("MovieDetail", logMessage);
 
-        // TODO: Add booking logic or navigate to next screen
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("movie", movie);
+        intent.putExtra("selected_date", selectedDate);
+        intent.putExtra("selected_theater", selectedTheater);
+        intent.putExtra("selected_theater_address", selectedTheaterAddress);
+        intent.putExtra("selected_theater_distance", selectedTheaterDistance);
+        intent.putExtra("selected_showtime", selectedShowtime);
+        startActivity(intent);
     }
 
     private List<Theater> generateDummyTheaterData() {
@@ -422,7 +413,6 @@ public class MovieDetail extends AppCompatActivity {
         return theaters;
     }
 
-    // Theater data class for dummy data
     private static class Theater {
         String name;
         String address;
