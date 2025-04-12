@@ -24,7 +24,7 @@ public class WelcomeScreen extends AppCompatActivity {
 
         // Initialize views
         ImageView backgroundImageView = findViewById(R.id.rundefined);
-        ImageView dividerImageView = findViewById(R.id.rzwbaefbjbnb);
+
         LinearLayout continueWithEmailButton = findViewById(R.id.rol8crfvwycf);
         LinearLayout signInButton = findViewById(R.id.rw63jli1lfn);
 
@@ -37,12 +37,6 @@ public class WelcomeScreen extends AppCompatActivity {
                 .into(backgroundImageView);
 
         // Load divider image using Glide
-        Glide.with(this)
-                .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/ablrhocx_expires_30_days.png")
-                .placeholder(R.drawable.placeholder_divider)
-                .error(R.drawable.error_image)
-                .fitCenter()
-                .into(dividerImageView);
 
         // Set click listener for "Continue with email"
         continueWithEmailButton.setOnClickListener(new View.OnClickListener() {

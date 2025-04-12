@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/lineok"
         android:scaleType="fitXY" />
-
     <!-- Centering the TextView -->
     <TextView
         android:id="@+id/screen_label"

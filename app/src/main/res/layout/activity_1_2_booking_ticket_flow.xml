@@ -1,624 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFFFF"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <!-- ScrollView for content -->
     <ScrollView
-        android:id="@+id/romzdvo9qi78"
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="center_horizontal"
         android:background="#FFFFFF">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/r9auu8u3ouwl"
+
+            <!-- Movie Header (for Poster) -->
+            <LinearLayout
+                android:id="@+id/movie_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="48dp"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:id="@+id/rg5xrxvhx6w"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#800F1111"
-                        android:paddingBottom="18dp"
-                        android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                android:padding="16dp">
 
-                        <LinearLayout
-                            android:id="@+id/ridkvui2voa"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingHorizontal="20dp"
-                            android:layout_marginBottom="21dp"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:id="@+id/r1gj7hqaz85a"
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@mipmap/ic_launcher"
-                                android:scaleType="fitXY"
-                                />
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
-                                android:layout_weight="1"
-                                />
-                            <LinearLayout
-                                android:id="@+id/rdrpszh6mez"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:id="@+id/r8ddneai5vqr"
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
-                                    android:layout_marginEnd="20dp"
-                                    android:src="@mipmap/ic_launcher"
-                                    android:scaleType="fitXY"
-                                    />
-                                <ImageView
-                                    android:id="@+id/rdtif9r63nk5"
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
-                                    android:src="@mipmap/ic_launcher"
-                                    android:scaleType="fitXY"
-                                    />
-                            </LinearLayout>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:id="@+id/rh3a8lqoketl"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="176dp"
-                            android:orientation="vertical">
-                            <LinearLayout
-                                android:id="@+id/rqqga68pzzof"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:paddingRight="3dp"
-                                android:layout_marginBottom="4dp"
-                                android:orientation="horizontal">
-                                <LinearLayout
-                                    android:id="@+id/r162cnezqrl"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/sffffffsw1cr4"
-                                    android:paddingVertical="2dp"
-                                    android:paddingHorizontal="4dp"
-                                    android:layout_marginEnd="12dp"
-                                    android:clickable="true"
-                                    android:focusable="true"
-                                    android:orientation="vertical">
-                                    <TextView
-                                        android:id="@+id/r6c8qclil3xj"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="12sp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="wrap_content"
-                                        android:text="PG-13"
-                                        />
-                                </LinearLayout>
-                                <TextView
-                                    android:id="@+id/rx0q4k10ne1d"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="12sp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:text="2h 44m"
-                                    />
-                            </LinearLayout>
-                            <TextView
-                                android:id="@+id/rs0l32ugeg7"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="4dp"
-                                android:layout_height="wrap_content"
-                                android:layout_width="166dp"
-                                android:text="Mission: Impossible - Dead Reckoning Part One"
-                                />
-                            <LinearLayout
-                                android:id="@+id/r99e6tdt2ugd"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_vertical"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:id="@+id/r2kj7ydomodj"
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:layout_marginEnd="4dp"
-                                    android:src="@mipmap/ic_launcher"
-                                    android:scaleType="fitXY"
-                                    />
-                                <LinearLayout
-                                    android:id="@+id/rncsifo4w3si"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center_vertical"
-                                    android:paddingRight="5dp"
-                                    android:orientation="horizontal">
-                                    <TextView
-                                        android:id="@+id/rlouiqxyhw8h"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="12sp"
-                                        android:layout_marginEnd="2dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_width="wrap_content"
-                                        android:text="9.8 (192 Ratings)"
-                                        />
-                                    <ImageView
-                                        android:id="@+id/ry262jjaxvlr"
-                                        android:layout_width="20dp"
-                                        android:layout_height="20dp"
-                                        android:src="@mipmap/ic_launcher"
-                                        android:scaleType="fitXY"
-                                        />
-                                </LinearLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
                 <ImageView
-                    android:id="@+id/rqrfuxi8d49"
+                    android:id="@+id/movie_poster"
                     android:layout_width="136dp"
                     android:layout_height="188dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_alignParentBottom="true"
-                    android:src="@mipmap/ic_launcher"
+                    android:contentDescription="Movie poster"
                     android:scaleType="fitXY"
-                    />
-            </RelativeLayout>
-            <LinearLayout
-                android:id="@+id/rurz8ni1tp98"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/r27rp5gvl3we"
-                    android:textColor="#191B1C"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Order Summary"
-                    />
+                    app:srcCompat="@drawable/placeholder_poster" />
+
                 <LinearLayout
-                    android:id="@+id/rgbg70nbik1s"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
                     android:orientation="vertical">
-                    <LinearLayout
-                        android:id="@+id/rqj9upfnjcse"
-                        android:layout_width="match_parent"
+
+                    <TextView
+                        android:id="@+id/movie_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:id="@+id/rleuiu07093i"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="12dp"
-                            android:orientation="horizontal">
-                            <LinearLayout
-                                android:id="@+id/r00jqfhg1wv7pc"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/sd6d6d6sw1cr4"
-                                android:paddingVertical="3dp"
-                                android:paddingHorizontal="5dp"
-                                android:layout_marginEnd="12dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:orientation="vertical">
-                                <TextView
-                                    android:id="@+id/r2wuysc6stp3"
-                                    android:textColor="#F79824"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:text="x2"
-                                    />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/rdoyagdgk6w9"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                <TextView
-                                    android:id="@+id/r2glbryizdla"
-                                    android:textColor="#191B1C"
-                                    android:textSize="14sp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:text="Regular Ticket"
-                                    />
-                                <TextView
-                                    android:id="@+id/rb1o3xmjkaic"
-                                    android:textColor="#656E72"
-                                    android:textSize="14sp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:text="A3, A4"
-                                    />
-                            </LinearLayout>
-                        </LinearLayout>
-                        <TextView
-                            android:id="@+id/rsixh7j4dlrc"
-                            android:textColor="#191B1C"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="IDR 45.000"
-                            />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/rts1j3q10mb"
-                        android:layout_width="match_parent"
+                        android:text="Movie Title"
+                        android:textColor="#191B1C"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/movie_rating"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:id="@+id/rrc28035x0we"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="12dp"
-                            android:orientation="horizontal">
-                            <LinearLayout
-                                android:id="@+id/rqa9jx053uya"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/sd6d6d6sw1cr4"
-                                android:paddingVertical="3dp"
-                                android:paddingHorizontal="6dp"
-                                android:layout_marginEnd="12dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:orientation="vertical">
-                                <TextView
-                                    android:id="@+id/r7pc3unjc0r"
-                                    android:textColor="#F79824"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:text="x1"
-                                    />
-                            </LinearLayout>
-                            <LinearLayout
-                                android:id="@+id/rxfcr94hq8a"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-                                <TextView
-                                    android:id="@+id/r6zsm8m1lijr"
-                                    android:textColor="#191B1C"
-                                    android:textSize="14sp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content"
-                                    android:text="Blockbuster Bundle"
-                                    />
-                                <TextView
-                                    android:id="@+id/rnl3186ivkob"
-                                    android:textColor="#656E72"
-                                    android:textSize="14sp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="Large Popcorn, Two Medium Drinks, Nachos with Cheese"
-                                    />
-                            </LinearLayout>
-                        </LinearLayout>
-                        <TextView
-                            android:id="@+id/rrxvml17wmsc"
-                            android:textColor="#191B1C"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="IDR 120.000"
-                            />
-                    </LinearLayout>
+                        android:text="PG-13"
+                        android:textColor="#656E72"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/movie_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2h 44m"
+                        android:textColor="#656E72"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/movie_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9.8 (192 Ratings)"
+                        android:textColor="#656E72"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
-            <ImageView
-                android:id="@+id/rh36duafa3i4"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="32dp"
-                android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"
-                />
+
+            <!-- Order Summary (Ticket Row) -->
             <LinearLayout
-                android:id="@+id/r8ncieobe58t"
+                android:id="@+id/order_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="62dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/rjct8wsv861g"
+                    android:id="@+id/order_summary_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Order Summary"
                     android:textColor="#191B1C"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Payment Summary"
-                    />
+                    android:textStyle="bold" />
+
                 <LinearLayout
-                    android:id="@+id/r18ta1w3dcye"
+                    android:id="@+id/ticket_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:orientation="vertical">
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
                     <LinearLayout
-                        android:id="@+id/r726y3n3opt8"
+                        android:id="@+id/ticket_info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/ticket_count_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/ticket_badge_background"
+                            android:paddingHorizontal="5dp"
+                            android:paddingVertical="3dp">
+
+                            <TextView
+                                android:id="@+id/ticket_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="x2"
+                                android:textColor="#F79824"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ticket_details"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/ticket_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Regular Ticket"
+                                android:textColor="#191B1C"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/ticket_seats"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="A3, A4"
+                                android:textColor="#656E72"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/ticket_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IDR 45,000"
+                        android:textColor="#191B1C"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Payment Summary -->
+            <LinearLayout
+                android:id="@+id/payment_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/payment_summary_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Payment Summary"
+                    android:textColor="#191B1C"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/payment_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ticket_price_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:id="@+id/rbyfu9uwepu"
-                            android:textColor="#191B1C"
-                            android:textSize="14sp"
-                            android:layout_marginEnd="4dp"
+                            android:id="@+id/ticket_label"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:text="Ticket"
-                            />
-                        <TextView
-                            android:id="@+id/rl2tqdxoi2co"
                             android:textColor="#191B1C"
-                            android:textSize="14sp"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/payment_ticket_price"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="90.000"
-                            />
+                            android:gravity="end"
+                            android:text="IDR 90,000"
+                            android:textColor="#191B1C"
+                            android:textSize="14sp" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:id="@+id/r8rn7l3bcxdt"
+                        android:id="@+id/tax_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:id="@+id/r1dfcdhjooga"
-                            android:textColor="#191B1C"
-                            android:textSize="14sp"
-                            android:layout_marginEnd="4dp"
+                            android:id="@+id/tax_label"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:text="Tax"
-                            />
-                        <TextView
-                            android:id="@+id/ra7p0rpi4xne"
                             android:textColor="#191B1C"
-                            android:textSize="14sp"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/payment_tax"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="21.000"
-                            />
+                            android:gravity="end"
+                            android:text="IDR 9,000"
+                            android:textColor="#191B1C"
+                            android:textSize="14sp" />
                     </LinearLayout>
-                    <ImageView
-                        android:id="@+id/rh4y495moeh5"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="12dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:scaleType="fitXY"
-                        />
+
                     <LinearLayout
-                        android:id="@+id/rq8lmuxqt39i"
+                        android:id="@+id/total_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:orientation="horizontal">
+
                         <TextView
-                            android:id="@+id/rxvqprsjagy"
-                            android:textColor="#191B1C"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="4dp"
+                            android:id="@+id/total_label"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:text="Total"
-                            />
-                        <TextView
-                            android:id="@+id/rdl09mnw4vo"
                             android:textColor="#191B1C"
                             android:textSize="16sp"
-                            android:textStyle="bold"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/payment_total"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="IDR 231.000"
-                            />
+                            android:gravity="end"
+                            android:text="IDR 99,000"
+                            android:textColor="#191B1C"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            <ImageView
-                android:id="@+id/rng5hriy2nw"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="32dp"
-                android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"
-                />
+
+            <!-- Payment Method -->
             <LinearLayout
-                android:id="@+id/r9tnw2a0e7m4"
+                android:id="@+id/payment_method_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="16dp"
                 android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/rmhzdvemgbz"
+                    android:id="@+id/payment_method_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Payment Method"
                     android:textColor="#191B1C"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Payment Method"
-                    />
+                    android:textStyle="bold" />
+
                 <LinearLayout
-                    android:id="@+id/rlf89zaun8ir"
+                    android:id="@+id/payment_method_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginHorizontal="16dp"
                     android:orientation="vertical">
+
                     <LinearLayout
-                        android:id="@+id/ro1odbipl8g"
+                        android:id="@+id/selected_payment_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:id="@+id/r9s65o6c233i"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:background="@drawable/selectable_background">
+
+                        <ImageView
+                            android:id="@+id/payment_icon"
+                            android:layout_width="32dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Payment method icon"
+                            app:srcCompat="@drawable/payment_icon" />
+
+                        <TextView
+                            android:id="@+id/payment_method"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="12dp"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:id="@+id/r61m7g8mlkno"
-                                android:layout_width="32dp"
-                                android:layout_height="24dp"
-                                android:layout_marginEnd="12dp"
-                                android:src="@mipmap/ic_launcher"
-                                android:scaleType="fitXY"
-                                />
-                            <TextView
-                                android:id="@+id/r038a0b7ru18f"
-                                android:textColor="#191B1C"
-                                android:textSize="16sp"
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_weight="1"
-                                android:text="**** **** **** 2157"
-                                />
-                        </LinearLayout>
-                        <ImageView
-                            android:id="@+id/ryhngxk5tyqo"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@mipmap/ic_launcher"
-                            android:scaleType="fitXY"
-                            />
+                            android:text="Select a payment method"
+                            android:textColor="#191B1C"
+                            android:textSize="16sp" />
                     </LinearLayout>
-                    <ImageView
-                        android:id="@+id/rxif3vnty5yc"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginBottom="16dp"
-                        android:src="@mipmap/ic_launcher"
-                        android:scaleType="fitXY"
-                        />
+
                     <LinearLayout
-                        android:id="@+id/ret6sgscgu79"
+                        android:id="@+id/voucher_section"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <LinearLayout
-                            android:id="@+id/rhny964ttnd4"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:background="@drawable/selectable_background">
+
+                        <ImageView
+                            android:id="@+id/voucher_icon"
+                            android:layout_width="32dp"
+                            android:layout_height="21dp"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Voucher icon"
+                            app:srcCompat="@drawable/voucher_icon" />
+
+                        <TextView
+                            android:id="@+id/voucher_text"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:layout_marginEnd="12dp"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:id="@+id/rv4qnjn8w84m"
-                                android:layout_width="32dp"
-                                android:layout_height="21dp"
-                                android:layout_marginEnd="12dp"
-                                android:src="@mipmap/ic_launcher"
-                                android:scaleType="fitXY"
-                                />
-                            <TextView
-                                android:id="@+id/r0i6f3oijvqxa"
-                                android:textColor="#191B1C"
-                                android:textSize="16sp"
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_weight="1"
-                                android:text="Use voucher to get discount"
-                                />
-                        </LinearLayout>
+                            android:text="Use a voucher"
+                            android:textColor="#191B1C"
+                            android:textSize="16sp" />
+
                         <ImageView
-                            android:id="@+id/riz284b4ci0m"
+                            android:id="@+id/arrow_icon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@mipmap/ic_launcher"
-                            android:scaleType="fitXY"
-                            />
+                            android:contentDescription="Expand voucher options"
+                            app:srcCompat="@drawable/arrow_icon" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/rlrksz5xd8nc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:background="@drawable/cr8b2466fd"
-                android:paddingVertical="18dp"
-                android:layout_marginBottom="23dp"
-                android:layout_marginHorizontal="20dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/rs5245kl621"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Pay now"
-                    />
-            </LinearLayout>
-            <ImageView
-                android:id="@+id/r1ssedkwn0jq"
-                android:layout_width="120dp"
-                android:layout_height="1dp"
-                android:layout_marginBottom="32dp"
-                android:src="@mipmap/ic_launcher"
-                android:scaleType="fitXY"
-                />
         </LinearLayout>
     </ScrollView>
+
+    <!-- Pay Now Button (Fixed at Bottom) -->
+    <LinearLayout
+        android:id="@+id/pay_now_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_background"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:id="@+id/pay_now_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pay Now"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>

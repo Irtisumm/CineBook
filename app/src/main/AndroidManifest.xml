@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
 
-
+        <activity android:name=".bookingflow.OrderSummaryActivity"
+            android:exported="true" />
 
         <!-- Sign In Activity -->
         <activity
@@ -69,6 +70,7 @@
         <activity android:name="FiestBookingTicketFlow"
             android:exported="true"
             />
+
         <activity android:name="com.example.cinebook.bookingflow.FiestBookingTicketFlow" />
 
     </application>

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.cinebook.R;
+import com.example.cinebook.model.TicketOrder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,13 +104,32 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
             if (selectedSeats.isEmpty()) {
                 Toast.makeText(this, "Please select at least one seat", Toast.LENGTH_SHORT).show();
             } else {
-                StringBuilder selectedSeatsText = new StringBuilder("Selected Seats: ");
+                Intent intent = new Intent(FiestBookingTicketFlow.this, OrderSummaryActivity.class);
+                TicketOrder order = new TicketOrder();
+
+                // Populate TicketOrder
+                String movieTitle = getIntent().getStringExtra("movie_title");
+                order.setMovieTitle(movieTitle != null ? movieTitle : "Unknown Movie");
+                order.setMoviePosterUrl("https://example.com/poster.jpg");
+                order.setMovieRating("PG-13");
+                order.setMovieDuration("2h 44m");
+                order.setMovieScore(9.8);
+                order.setMovieRatingsCount(192);
+
+                // Convert selectedSeats (List<TextView>) to List<String> for TicketOrder
+                List<String> seatLabels = new ArrayList<>();
                 for (TextView seat : selectedSeats) {
-                    selectedSeatsText.append(seat.getText()).append(" ");
+                    seatLabels.add(seat.getText().toString());
                 }
-                selectedSeatsText.append("\nSubtotal: IDR ").append(subtotal);
-                Toast.makeText(this, selectedSeatsText.toString(), Toast.LENGTH_LONG).show();
-                // Proceed to next screen or payment
+                order.setSelectedSeats(seatLabels);
+                order.setTicketCount(seatLabels.size());
+                order.setTicketPrice(subtotal);
+                order.setTax(subtotal * 0.1); // 10% tax
+                order.setPaymentMethod("**** **** **** 2157");
+
+                // Attach TicketOrder to Intent
+                intent.putExtra("ticketOrder", order);
+                startActivity(intent);
             }
         });
     }
