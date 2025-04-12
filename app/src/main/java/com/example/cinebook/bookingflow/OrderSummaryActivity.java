@@ -82,6 +82,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
     private void setupListeners() {
         // Pay Now Button
+        // Inside setupListeners() method, update the payNowButton.setOnClickListener
+        // In OrderSummaryActivity.java, update the payNowButton listener
         binding.payNowButton.setOnClickListener(v -> {
             if (selectedPaymentMethod.equals("Select a payment method")) {
                 Toast.makeText(this, "Please select a payment method", Toast.LENGTH_SHORT).show();
@@ -92,6 +94,18 @@ public class OrderSummaryActivity extends AppCompatActivity {
                     .setMessage("Confirm payment of " + binding.paymentTotal.getText() + "?")
                     .setPositiveButton("Pay", (dialog, which) -> {
                         Toast.makeText(this, "Payment successful!", Toast.LENGTH_SHORT).show();
+                        TicketOrder order = getIntent().getParcelableExtra("ticketOrder");
+                        if (order != null) {
+                            // Update with new fields if not already set
+                            order.setCinemaLocation(order.getCinemaLocation() != null ? order.getCinemaLocation() : "Gandaria City");
+                            order.setShowTime(order.getShowTime() != null ? order.getShowTime() : "Wed, 12 Sep 14:45");
+                            order.setStudio(order.getStudio() != null ? order.getStudio() : "4");
+                            order.setRow(order.getRow() != null ? order.getRow() : "A");
+                            order.setPaymentMethod(selectedPaymentMethod);
+                        }
+                        Intent intent = new Intent(OrderSummaryActivity.this, MovieTicketActivity.class);
+                        intent.putExtra("ticketOrder", order);
+                        startActivity(intent);
                         finish();
                     })
                     .setNegativeButton("Cancel", null)

@@ -20,40 +20,71 @@ public class TicketOrder implements Parcelable {
     private double bundlePrice;
     private double tax;
     private String paymentMethod;
+    private String cinemaLocation;
+    private String showTime;
+    private String studio;
+    private String row;
 
     public TicketOrder() {
         selectedSeats = new ArrayList<>();
     }
 
+    // Getters and Setters
     public String getMovieTitle() { return movieTitle; }
     public void setMovieTitle(String movieTitle) { this.movieTitle = movieTitle; }
-    public String getMoviePosterUrl() { return movieTitle; }
+
+    public String getMoviePosterUrl() { return moviePosterUrl; } // Fixed: was returning movieTitle
     public void setMoviePosterUrl(String moviePosterUrl) { this.moviePosterUrl = moviePosterUrl; }
+
     public String getMovieRating() { return movieRating; }
     public void setMovieRating(String movieRating) { this.movieRating = movieRating; }
+
     public String getMovieDuration() { return movieDuration; }
     public void setMovieDuration(String movieDuration) { this.movieDuration = movieDuration; }
+
     public double getMovieScore() { return movieScore; }
     public void setMovieScore(double movieScore) { this.movieScore = movieScore; }
+
     public int getMovieRatingsCount() { return movieRatingsCount; }
     public void setMovieRatingsCount(int movieRatingsCount) { this.movieRatingsCount = movieRatingsCount; }
+
     public List<String> getSelectedSeats() { return selectedSeats; }
     public void setSelectedSeats(List<String> selectedSeats) { this.selectedSeats = selectedSeats; }
+
     public int getTicketCount() { return ticketCount; }
     public void setTicketCount(int ticketCount) { this.ticketCount = ticketCount; }
+
     public double getTicketPrice() { return ticketPrice; }
     public void setTicketPrice(double ticketPrice) { this.ticketPrice = ticketPrice; }
+
     public String getBundleName() { return bundleName; }
     public void setBundleName(String bundleName) { this.bundleName = bundleName; }
+
     public String getBundleDetails() { return bundleDetails; }
     public void setBundleDetails(String bundleDetails) { this.bundleDetails = bundleDetails; }
+
     public double getBundlePrice() { return bundlePrice; }
     public void setBundlePrice(double bundlePrice) { this.bundlePrice = bundlePrice; }
+
     public double getTax() { return tax; }
     public void setTax(double tax) { this.tax = tax; }
+
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 
+    public String getCinemaLocation() { return cinemaLocation; }
+    public void setCinemaLocation(String cinemaLocation) { this.cinemaLocation = cinemaLocation; }
+
+    public String getShowTime() { return showTime; }
+    public void setShowTime(String showTime) { this.showTime = showTime; }
+
+    public String getStudio() { return studio; }
+    public void setStudio(String studio) { this.studio = studio; }
+
+    public String getRow() { return row; }
+    public void setRow(String row) { this.row = row; }
+
+    // Parcelable implementation
     protected TicketOrder(Parcel in) {
         movieTitle = in.readString();
         moviePosterUrl = in.readString();
@@ -70,6 +101,10 @@ public class TicketOrder implements Parcelable {
         bundlePrice = in.readDouble();
         tax = in.readDouble();
         paymentMethod = in.readString();
+        cinemaLocation = in.readString();
+        showTime = in.readString();
+        studio = in.readString();
+        row = in.readString();
     }
 
     public static final Creator<TicketOrder> CREATOR = new Creator<TicketOrder>() {
@@ -105,5 +140,9 @@ public class TicketOrder implements Parcelable {
         dest.writeDouble(bundlePrice);
         dest.writeDouble(tax);
         dest.writeString(paymentMethod);
+        dest.writeString(cinemaLocation);
+        dest.writeString(showTime);
+        dest.writeString(studio);
+        dest.writeString(row);
     }
 }

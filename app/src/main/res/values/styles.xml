@@ -2,5 +2,10 @@
 <resources>
     <style name="cr24">
         <item name="cornerSize">24dp</item>
+
     </style>
+    <style name="cr16" parent="">
+        <item name="cornerSize">16dp</item>
+    </style>
+
 </resources>
