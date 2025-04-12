@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Row K -->
+    <string-array name="row_k_labels">
+        <item></item>
+        <item>K1</item>
+        <item>K2</item>
+        <item>K3</item>
+        <item>K4</item>
+        <item></item>
+        <item>K6</item>
+        <item>K7</item>
+        <item>K8</item>
+        <item>K9</item>
+    </string-array>
+    <string-array name="row_k_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row J -->
+    <string-array name="row_j_labels">
+        <item></item>
+        <item>J1</item>
+        <item>J2</item>
+        <item>J3</item>
+        <item>J4</item>
+        <item></item>
+        <item>J6</item>
+        <item>J7</item>
+        <item>J8</item>
+        <item>J9</item>
+    </string-array>
+    <string-array name="row_j_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row H -->
+    <string-array name="row_h_labels">
+        <item></item>
+        <item>H1</item>
+        <item>H2</item>
+        <item>H3</item>
+        <item>H4</item>
+        <item></item>
+        <item>H6</item>
+        <item>H7</item>
+        <item>H8</item>
+        <item>H9</item>
+    </string-array>
+    <string-array name="row_h_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row G -->
+    <string-array name="row_g_labels">
+        <item></item>
+        <item>G1</item>
+        <item>G2</item>
+        <item>G3</item>
+        <item>G4</item>
+        <item></item>
+        <item>G6</item>
+        <item>G7</item>
+        <item>G8</item>
+        <item>G9</item>
+    </string-array>
+    <string-array name="row_g_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row F -->
+    <string-array name="row_f_labels">
+        <item></item>
+        <item>F1</item>
+        <item>F2</item>
+        <item>F3</item>
+        <item>F4</item>
+        <item></item>
+        <item>F6</item>
+        <item>F7</item>
+        <item>F8</item>
+        <item>F9</item>
+    </string-array>
+    <string-array name="row_f_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row E -->
+    <string-array name="row_e_labels">
+        <item></item>
+        <item>E1</item>
+        <item>E2</item>
+        <item>E3</item>
+        <item>E4</item>
+        <item></item>
+        <item>E6</item>
+        <item>E7</item>
+        <item>E8</item>
+        <item>E9</item>
+    </string-array>
+    <string-array name="row_e_states">
+        <item>empty</item>
+        <item>unavailable</item>
+        <item>unavailable</item>
+        <item>unavailable</item>
+        <item>unavailable</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row D -->
+    <string-array name="row_d_labels">
+        <item></item>
+        <item>D1</item>
+        <item>D2</item>
+        <item>D3</item>
+        <item>D4</item>
+        <item></item>
+        <item>D6</item>
+        <item>D7</item>
+        <item>D8</item>
+        <item>D9</item>
+    </string-array>
+    <string-array name="row_d_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row C -->
+    <string-array name="row_c_labels">
+        <item></item>
+        <item>C1</item>
+        <item>C2</item>
+        <item>C3</item>
+        <item>C4</item>
+        <item></item>
+        <item>C6</item>
+        <item>C7</item>
+        <item>C8</item>
+        <item>C9</item>
+    </string-array>
+    <string-array name="row_c_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row B -->
+    <string-array name="row_b_labels">
+        <item></item>
+        <item>B1</item>
+        <item>B2</item>
+        <item>B3</item>
+        <item>B4</item>
+        <item></item>
+        <item>B6</item>
+        <item>B7</item>
+        <item>B8</item>
+        <item>B9</item>
+    </string-array>
+    <string-array name="row_b_states">
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+
+    <!-- Row A -->
+    <string-array name="row_a_labels">
+        <item>A1</item>
+        <item>A2</item>
+        <item>A3</item>
+        <item>A4</item>
+        <item>A5</item>
+        <item></item>
+        <item>A7</item>
+        <item>A8</item>
+        <item>A9</item>
+        <item>A10</item>
+    </string-array>
+    <string-array name="row_a_states">
+        <item>available</item>
+        <item>available</item>
+        <item>selected</item>
+        <item>selected</item>
+        <item>available</item>
+        <item>empty</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+        <item>available</item>
+    </string-array>
+</resources>

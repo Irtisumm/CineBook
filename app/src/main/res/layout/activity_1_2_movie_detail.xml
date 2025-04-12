@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#0F1111"
     android:clipChildren="false"
     android:clipToPadding="false"
@@ -44,7 +45,8 @@
                     android:layout_marginStart="20dp"
                     android:src="@drawable/ic_arrow_back"
                     android:tint="#FFFFFF"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    tools:ignore="UseAppTint" />
 
                 <LinearLayout
                     android:id="@+id/header_layout_ratingDuration"
@@ -75,7 +77,7 @@
 
                     <TextView
                         android:id="@+id/header_textView_duration"
-                        android:textColor="#000000"
+                        android:textColor="#FFFFFF"
                         android:textSize="12sp"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
@@ -84,7 +86,7 @@
 
                 <TextView
                     android:id="@+id/header_textView_movieTitle"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="28sp"
                     android:textStyle="bold"
                     android:layout_marginHorizontal="20dp"
@@ -115,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/header_imageView_moviePoster"
                         android:layout_marginStart="16dp"
-                        android:textColor="#000000"
+                        android:textColor="#FFFFFF"
                         android:textSize="14sp"
                         android:text="The next-generation Russian submarine Sevastopol employs an advanced AI..." />
                 </RelativeLayout>
@@ -242,14 +244,6 @@
                         android:textColor="#000000"
                         android:textSize="14sp" />
 
-                    <ImageView
-                        android:id="@+id/ratings_imageView_starBar"
-                        android:layout_width="100dp"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="8dp"
-                        android:src="@android:drawable/star_big_on"
-                        android:tint="#FFD700"
-                        android:scaleType="fitXY" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -396,7 +390,8 @@
                         android:layout_marginEnd="8dp"
                         android:src="@android:drawable/ic_menu_myplaces"
                         android:tint="#656E72"
-                        android:scaleType="fitXY" />
+                        android:scaleType="fitXY"
+                        tools:ignore="UseAppTint" />
 
                     <TextView
                         android:id="@+id/cinema_textView_address"
@@ -482,15 +477,26 @@
                     android:textColor="#000000"
                     android:textSize="16sp" />
             </LinearLayout>
-            <Button
+            <LinearLayout
                 android:id="@+id/continue_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:text="@string/continue_button_text"
-                android:backgroundTint="#6200EE"
-                android:textColor="#000000" />
+                android:gravity="center_horizontal"
+                android:background="@drawable/cr8b2466fd"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/continue_button_Text"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Continue"/>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

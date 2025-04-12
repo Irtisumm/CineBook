@@ -20,6 +20,8 @@
             </intent-filter>
         </activity>
 
+
+
         <!-- Sign In Activity -->
         <activity
             android:name=".signin.SignInActivity"
@@ -38,7 +40,6 @@
         <activity
             android:name="MainActivity"
             android:exported="true" />
-
         <!-- Home Screen Activity -->
         <activity
             android:name=".screens.HomeScreen"
@@ -64,6 +65,13 @@
         <activity
             android:name=".screens.SearchActivity"
             android:exported="true" />
+
+        <activity android:name="FiestBookingTicketFlow"
+            android:exported="true"
+            />
+        <activity android:name="com.example.cinebook.bookingflow.FiestBookingTicketFlow" />
+
     </application>
+
 
 </manifest>

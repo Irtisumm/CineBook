@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/seat_grid_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="64dp"
+    android:orientation="vertical">
+
+    <!-- Row K -->
+    <include
+        android:id="@+id/row_k"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row J -->
+    <include
+        android:id="@+id/row_j"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row H -->
+    <include
+        android:id="@+id/row_h"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row G -->
+    <include
+        android:id="@+id/row_g"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row F -->
+    <include
+        android:id="@+id/row_f"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row E -->
+    <include
+        android:id="@+id/row_e"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row D -->
+    <include
+        android:id="@+id/row_d"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row C -->
+    <include
+        android:id="@+id/row_c"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row B -->
+    <include
+        android:id="@+id/row_b"
+        layout="@layout/layout_seat_row" />
+
+    <!-- Row A -->
+    <include
+        android:id="@+id/row_a"
+        layout="@layout/layout_seat_row" />
+
+</LinearLayout>
