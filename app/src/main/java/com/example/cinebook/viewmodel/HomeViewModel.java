@@ -29,7 +29,7 @@ public class HomeViewModel extends ViewModel {
     private final MutableLiveData<List<Movie>> filteredMovies = new MutableLiveData<>();
 
     private final TMDbApiService apiService = ApiClient.getApiService();
-    private final String apiKey = "..";
+    private final String apiKey = "494b3fe65fb0e929af45cab610c73858";
 
     public HomeViewModel() {
         fetchAllData();

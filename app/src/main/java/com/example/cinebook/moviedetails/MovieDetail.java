@@ -173,11 +173,12 @@ public class MovieDetail extends AppCompatActivity {
             showtimesContainer.setOrientation(LinearLayout.VERTICAL);
             showtimesContainer.setTag("showtimes_" + i);
 
-            addShowtimesSection(showtimesContainer, "REGULAR", "IDR 40,000", theater.regularShowtimes, i);
-            addShowtimesSection(showtimesContainer, "IMAX", "IDR 55,000", theater.imaxShowtimes, i);
-            addShowtimesSection(showtimesContainer, "PREMIERE", "IDR 70,000", theater.premiereShowtimes, i);
+            addShowtimesSection(showtimesContainer, "REGULAR", "RM 30", theater.regularShowtimes, i);
+            addShowtimesSection(showtimesContainer, "IMAX", "RM 50", theater.imaxShowtimes, i);
+            addShowtimesSection(showtimesContainer, "PREMIERE", "RM 70", theater.premiereShowtimes, i);
 
             theaterBinding.layoutTheaterDetails.addView(showtimesContainer);
+            theaterBinding.layoutTheaterDetails.setVisibility(View.VISIBLE); // Ensure visible
 
             final int index = i;
             theaterBinding.getRoot().setOnClickListener(v -> selectTheater(index));
@@ -207,11 +208,13 @@ public class MovieDetail extends AppCompatActivity {
             LayoutTheaterItemBinding prevBinding = theaterBindings.get(selectedTheaterIndex);
             prevBinding.getRoot().setBackgroundResource(0);
             prevBinding.textTheaterName.setTextColor(ContextCompat.getColor(this, R.color.black_191b1c));
+            prevBinding.layoutTheaterDetails.setVisibility(View.GONE);
         }
 
         LayoutTheaterItemBinding theaterBinding = theaterBindings.get(index);
         theaterBinding.getRoot().setBackgroundResource(R.drawable.selected_background);
         theaterBinding.textTheaterName.setTextColor(ContextCompat.getColor(this, R.color.selected_text));
+        theaterBinding.layoutTheaterDetails.setVisibility(View.VISIBLE);
 
         selectedTheaterIndex = index;
 
@@ -234,22 +237,23 @@ public class MovieDetail extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         header.setOrientation(LinearLayout.HORIZONTAL);
         header.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        header.setPadding(0, 0, 0, 20);
+        header.setPadding(0, 8, 0, 16);
 
         TextView titleView = new TextView(this);
         titleView.setLayoutParams(new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         titleView.setText(title);
         titleView.setTextColor(ContextCompat.getColor(this, R.color.gray_656e72));
-        titleView.setTextSize(14);
+        titleView.setTextSize(16);
         titleView.setTypeface(null, android.graphics.Typeface.BOLD);
 
         TextView priceView = new TextView(this);
         priceView.setLayoutParams(new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         priceView.setText(price);
-        priceView.setTextColor(ContextCompat.getColor(this, R.color.gray_656e72));
-        priceView.setTextSize(12);
+        priceView.setTextColor(ContextCompat.getColor(this, R.color.black_191b1c));
+        priceView.setTextSize(16);
+        priceView.setTypeface(null, android.graphics.Typeface.BOLD);
         priceView.setGravity(android.view.Gravity.END);
 
         header.addView(titleView);
@@ -269,7 +273,7 @@ public class MovieDetail extends AppCompatActivity {
             timeLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             timeLayout.setBackgroundResource(R.drawable.scbcfd1sw1cr4);
-            timeLayout.setPadding(0, 8, 0, 8);
+            timeLayout.setPadding(8, 8, 8, 8);
             timeLayout.setGravity(android.view.Gravity.CENTER);
             timeLayout.setTag("time_" + theaterIndex + "_" + title + "_" + time);
 
@@ -280,7 +284,7 @@ public class MovieDetail extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             timeView.setText(time);
             timeView.setTextColor(ContextCompat.getColor(this, R.color.black_191b1c));
-            timeView.setTextSize(12);
+            timeView.setTextSize(14);
             timeView.setTypeface(null, android.graphics.Typeface.BOLD);
 
             timeLayout.addView(timeView);

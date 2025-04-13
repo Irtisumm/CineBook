@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="55dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
     <!-- Show Dates -->
     <LinearLayout
         android:id="@+id/layout_show_dates"
@@ -22,7 +24,7 @@
             android:layout_marginBottom="16dp"
             android:text="Shows"
             android:textColor="#191B1C"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -59,14 +61,15 @@
                 android:layout_weight="1"
                 android:text="All Theaters"
                 android:textColor="#191B1C"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/icon_theaters_dropdown"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="fitXY" />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="fitXY"
+                android:contentDescription="Theater dropdown" />
         </LinearLayout>
 
         <LinearLayout
@@ -74,7 +77,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <!-- Theater listings will be populated dynamically -->
         </LinearLayout>

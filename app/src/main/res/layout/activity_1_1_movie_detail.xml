@@ -40,20 +40,28 @@
                 android:layout_height="wrap_content" />
 
             <!-- Continue Button -->
-            <Button
-                android:id="@+id/button_continue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/cr8b2466fd"
-                android:enabled="false"
-                android:text="Continue"
-                android:textColor="@android:color/white"
+        <LinearLayout
+            android:id="@+id/button_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:background="@drawable/button_background"
+            android:paddingVertical="12dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/add_payment_text"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp"
-                android:textStyle="bold" />
-
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Continue"/>
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
