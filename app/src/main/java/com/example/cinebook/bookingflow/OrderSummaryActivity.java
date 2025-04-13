@@ -1,6 +1,7 @@
 package com.example.cinebook.bookingflow;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +18,9 @@ import com.bumptech.glide.Glide;
 import com.example.cinebook.R;
 import com.example.cinebook.databinding.Activity12BookingTicketFlowBinding;
 import com.example.cinebook.model.TicketOrder;
-import java.text.NumberFormat;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +33,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private Activity12BookingTicketFlowBinding binding;
     private String selectedPaymentMethod = "Select a payment method";
     private String selectedVoucher = null;
+    private double discountMultiplier = 1.0; // 1.0 = no discount
+    private TicketOrder order;
+    private static final String PREFS_NAME = "CinebookPrefs";
+    private static final String KEY_PAYMENT_METHODS = "payment_methods";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +44,18 @@ public class OrderSummaryActivity extends AppCompatActivity {
         binding = Activity12BookingTicketFlowBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Back button
+        ImageView backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(OrderSummaryActivity.this, FiestBookingTicketFlow.class);
+            intent.putExtra("ticketOrder", order);
+            startActivity(intent);
+            finish();
+        });
+
         // Retrieve data from intent
         Intent intent = getIntent();
-        TicketOrder order = intent.getParcelableExtra("ticketOrder");
+        order = intent.getParcelableExtra("ticketOrder");
 
         if (order != null) {
             bindData(order);
@@ -75,19 +92,35 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         // Order Summary - Tickets
         binding.ticketCount.setText(String.format(Locale.getDefault(), "x%d", order.getTicketCount()));
-        binding.ticketType.setText("Regular Ticket");
+        // Set ticket type based on showtime
+        String showTime = order.getShowTime().toUpperCase();
+        String ticketType = showTime.contains("IMAX") ? "IMAX Ticket" :
+                showTime.contains("PREMIERE") ? "PREMIERE Ticket" : "Regular Ticket";
+        binding.ticketType.setText(ticketType);
         binding.ticketSeats.setText(String.join(", ", order.getSelectedSeats()));
         binding.ticketPrice.setText(formatCurrency(order.getTicketPrice() / order.getTicketCount()));
 
         // Payment Summary
-        binding.paymentTicketPrice.setText(formatCurrency(order.getTicketPrice()));
-        binding.paymentTax.setText(formatCurrency(order.getTax()));
-        double total = order.getTicketPrice() + order.getTax();
-        binding.paymentTotal.setText(formatCurrency(total));
-
-        // Payment Method
+        updatePaymentSummary();
         binding.paymentMethod.setText(selectedPaymentMethod);
         binding.voucherText.setText(selectedVoucher != null ? "Voucher: " + selectedVoucher : "Use a voucher");
+    }
+
+    private void updatePaymentSummary() {
+        double basePrice = order.getTicketPrice();
+        double discountedPrice = basePrice * discountMultiplier;
+        double tax = discountedPrice * 0.1;
+        double total = discountedPrice + tax;
+
+        binding.paymentTicketPrice.setText(formatCurrency(discountedPrice));
+        binding.paymentTax.setText(formatCurrency(tax));
+        if (selectedVoucher != null && discountMultiplier < 1.0) {
+            binding.discountRow.setVisibility(View.VISIBLE);
+            binding.paymentDiscount.setText(formatCurrency(basePrice - discountedPrice));
+        } else {
+            binding.discountRow.setVisibility(View.GONE);
+        }
+        binding.paymentTotal.setText(formatCurrency(total));
     }
 
     private void setupListeners() {
@@ -102,10 +135,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
                     .setMessage("Confirm payment of " + binding.paymentTotal.getText() + "?")
                     .setPositiveButton("Pay", (dialog, which) -> {
                         Toast.makeText(this, "Payment successful!", Toast.LENGTH_SHORT).show();
-                        TicketOrder order = getIntent().getParcelableExtra("ticketOrder");
-                        if (order != null) {
-                            order.setPaymentMethod(selectedPaymentMethod);
-                        }
+                        order.setPaymentMethod(selectedPaymentMethod);
                         Intent intent = new Intent(OrderSummaryActivity.this, MovieTicketActivity.class);
                         intent.putExtra("ticketOrder", order);
                         startActivity(intent);
@@ -123,11 +153,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
     }
 
     private void showPaymentMethodDialog() {
-        List<String> paymentMethods = new ArrayList<>(Arrays.asList(
-                "Visa **** 1234",
-                "MasterCard **** 5678",
-                "Add New Card"
-        ));
+        List<String> paymentMethods = getPaymentMethods();
+        paymentMethods.add("Add New Card");
         new AlertDialog.Builder(this)
                 .setTitle("Select Payment Method")
                 .setItems(paymentMethods.toArray(new String[0]), (dialog, which) -> {
@@ -140,6 +167,25 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    private List<String> getPaymentMethods() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String json = prefs.getString(KEY_PAYMENT_METHODS, null);
+        List<String> cardNumbers = new ArrayList<>();
+        if (json != null) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<PaymentMethod>>(){}.getType();
+            List<PaymentMethod> methods = gson.fromJson(json, type);
+            for (PaymentMethod method : methods) {
+                cardNumbers.add(method.cardNumber);
+            }
+        } else {
+            // Default cards
+            cardNumbers.add("**** **** **** 2157");
+            cardNumbers.add("**** **** **** 2157");
+        }
+        return cardNumbers;
     }
 
     private void showAddCardDialog() {
@@ -263,7 +309,10 @@ public class OrderSummaryActivity extends AppCompatActivity {
             }
 
             String lastFour = cardNumber.substring(cardNumber.length() - 4);
-            selectedPaymentMethod = String.format("Card **** **** **** %s", lastFour);
+            String displayCardNumber = String.format("**** **** **** %s", lastFour);
+            // Save to SharedPreferences
+            savePaymentMethod(displayCardNumber, cardholderName);
+            selectedPaymentMethod = displayCardNumber;
             binding.paymentMethod.setText(selectedPaymentMethod);
             Toast.makeText(this, "Card added successfully!", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
@@ -271,6 +320,23 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         cancelButton.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
+    }
+
+    private void savePaymentMethod(String cardNumber, String cardHolder) {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String json = prefs.getString(KEY_PAYMENT_METHODS, null);
+        List<PaymentMethod> methods;
+        Gson gson = new Gson();
+        if (json != null) {
+            Type type = new TypeToken<List<PaymentMethod>>(){}.getType();
+            methods = gson.fromJson(json, type);
+        } else {
+            methods = new ArrayList<>();
+        }
+        methods.add(new PaymentMethod(cardNumber, cardHolder));
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY_PAYMENT_METHODS, gson.toJson(methods));
+        editor.apply();
     }
 
     private void showVoucherDialog() {
@@ -284,25 +350,37 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 .setItems(vouchers.toArray(new String[0]), (dialog, which) -> {
                     if (which == vouchers.size() - 1) {
                         selectedVoucher = null;
+                        discountMultiplier = 1.0;
                         binding.voucherText.setText("Use a voucher");
                     } else {
                         selectedVoucher = vouchers.get(which);
+                        discountMultiplier = selectedVoucher.contains("VOUCHER10") ? 0.9 : 0.8;
                         binding.voucherText.setText("Voucher: " + selectedVoucher);
                         Toast.makeText(this, "Voucher applied!", Toast.LENGTH_SHORT).show();
                     }
+                    updatePaymentSummary();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
     private String formatCurrency(double amount) {
-        NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("id", "ID"));
-        return "IDR " + formatter.format(amount).replace(",", ".");
+        return String.format(Locale.getDefault(), "RM %.0f", amount);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
+    }
+
+    private static class PaymentMethod {
+        String cardNumber;
+        String cardHolder;
+
+        PaymentMethod(String cardNumber, String cardHolder) {
+            this.cardNumber = cardNumber;
+            this.cardHolder = cardHolder;
+        }
     }
 }

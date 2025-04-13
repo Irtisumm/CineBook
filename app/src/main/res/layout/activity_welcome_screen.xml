@@ -9,18 +9,17 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rundefined_rl_rl"
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/rundefined"
+            android:id="@+id/background_image"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,64 +27,47 @@
             android:orientation="vertical">
 
             <ScrollView
-                android:id="@+id/rr8naa7kr36r"
+                android:id="@+id/content_scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/remp9f4hi3ev"
+                        android:id="@+id/intro_content_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:background="@drawable/lr27000000000000000"
                         android:paddingTop="216dp"
-                        android:paddingBottom="32dp"
+                        android:paddingBottom="84dp"
                         android:paddingHorizontal="20dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:minHeight="1000dp">
 
-                        <LinearLayout
-                            android:id="@+id/rjodxej589j"
+                        <TextView
+                            android:id="@+id/app_title_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:paddingRight="4dp"
+                            android:layout_marginHorizontal="24dp"
                             android:layout_marginBottom="152dp"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:id="@+id/rzy4x8ixblze"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:background="#595959"
-                                android:layout_marginEnd="12dp"
-                                android:orientation="vertical">
-                            </LinearLayout>
-
-                            <TextView
-                                android:id="@+id/rq0ogfwl36ir"
-                                android:textColor="#FFFFFF"
-                                android:textSize="36sp"
-                                android:textStyle="bold"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:text="Munonton"/>
-                        </LinearLayout>
+                            android:text="CineBook"
+                            android:textColor="#FFFFFF"
+                            android:textSize="36sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
-                            android:id="@+id/rdrhip4aa3g"
+                            android:id="@+id/header_text_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="40dp"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/rkmz1fnyzfxb"
+                                android:id="@+id/header_text"
                                 android:textColor="#FFFFFF"
                                 android:textSize="36sp"
                                 android:textStyle="bold"
@@ -95,24 +77,22 @@
                                 android:text="Get Started"/>
 
                             <TextView
-                                android:id="@+id/rfcslrbs40ju"
+                                android:id="@+id/subheader_text"
                                 android:textColor="#B9BFC1"
                                 android:textSize="20sp"
                                 android:layout_height="wrap_content"
                                 android:layout_width="match_parent"
-                                android:layout_weight="1"
                                 android:text="Come in to enjoy exclusive shows at the cinema with an amazing experience"/>
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/rvyxss619ks"
+                            android:id="@+id/buttons_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="52dp"
                             android:orientation="vertical">
 
                             <LinearLayout
-                                android:id="@+id/rol8crfvwycf"
+                                android:id="@+id/email_button"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
@@ -124,7 +104,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/rkilrxz69ake"
+                                    android:id="@+id/email_button_text"
                                     android:textColor="#191B1C"
                                     android:textSize="16sp"
                                     android:textStyle="bold"
@@ -134,14 +114,14 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/rw63jli1lfn"
+                                android:id="@+id/signin_container"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_horizontal"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/r5d8l91iccgx"
+                                    android:id="@+id/signin_text"
                                     android:textColor="#B9BFC1"
                                     android:textSize="16sp"
                                     android:textStyle="bold"

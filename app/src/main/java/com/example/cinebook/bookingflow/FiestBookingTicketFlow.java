@@ -33,7 +33,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     private TextView cinemaDate;
     private TextView timerText;
     private List<TextView> selectedSeats;
-    private int ticketPrice; // Price per ticket in RM (set dynamically)
+    private int ticketPrice;
     private int subtotal = 0;
     private CountDownTimer countDownTimer;
 
@@ -44,6 +44,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
 
         // Initialize views
         backButton = findViewById(R.id.back_button);
+        logoImage = findViewById(R.id.logo_image);
         cinemaIcon = findViewById(R.id.cinema_icon);
         screenImage = findViewById(R.id.screen_image);
         moviePoster = findViewById(R.id.movie_poster);
@@ -96,14 +97,18 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
             finish();
         });
 
-        // Load logo image
-        try {
-            Glide.with(this)
-                    .load(R.drawable.logo)
-                    .centerCrop()
-                    .into(logoImage);
-        } catch (Exception e) {
-            Log.e("FiestBookingTicketFlow", "Failed to load logo", e);
+        // Load logo image safely
+        if (logoImage != null) {
+            try {
+                Glide.with(this)
+                        .load(R.drawable.logo)
+                        .centerCrop()
+                        .into(logoImage);
+            } catch (Exception e) {
+                Log.e("FiestBookingTicketFlow", "Failed to load logo", e);
+            }
+        } else {
+            Log.e("FiestBookingTicketFlow", "logoImage is null - check layout for @+id/logo_image");
         }
 
         // Load cinema icon
@@ -160,13 +165,13 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                 // Populate TicketOrder
                 order.setMovieTitle(movieTitle);
                 order.setMoviePosterUrl(posterUrl);
-                order.setMovieRating("PG-13"); // Static, as per your code
-                order.setMovieDuration("2h 44m"); // Static
-                order.setMovieScore(9.8); // Static
-                order.setMovieRatingsCount(192); // Static
+                order.setMovieRating("PG-13");
+                order.setMovieDuration("2h 44m");
+                order.setMovieScore(9.8);
+                order.setMovieRatingsCount(192);
                 order.setCinemaLocation(selectedTheater);
                 order.setShowTime(selectedDateStr + ", " + selectedShowtime.replace("_", " "));
-                order.setStudio("4"); // Static
+                order.setStudio("4");
                 order.setRow(getSelectedRow());
 
                 // Convert selectedSeats to List<String>

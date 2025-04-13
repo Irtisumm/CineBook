@@ -7,6 +7,17 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Back"
+        android:padding="8dp" />
+
     <!-- ScrollView for content -->
     <ScrollView
         android:id="@+id/scroll_view"
@@ -162,7 +173,7 @@
                         android:id="@+id/ticket_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="IDR 45,000"
+                        android:text="RM 30"
                         android:textColor="#191B1C"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -216,7 +227,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="IDR 90,000"
+                            android:text="RM 60"
                             android:textColor="#191B1C"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -243,7 +254,35 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="IDR 9,000"
+                            android:text="RM 6"
+                            android:textColor="#191B1C"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/discount_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/discount_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Discount"
+                            android:textColor="#191B1C"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/payment_discount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="RM 0"
                             android:textColor="#191B1C"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -270,7 +309,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:text="IDR 99,000"
+                            android:text="RM 66"
                             android:textColor="#191B1C"
                             android:textSize="16sp"
                             android:textStyle="bold" />

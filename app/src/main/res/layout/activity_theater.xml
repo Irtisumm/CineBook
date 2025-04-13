@@ -78,7 +78,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@drawable/web" />
             </LinearLayout>
 
             <LinearLayout
@@ -99,7 +99,7 @@
                     android:layout_height="20dp"
                     android:layout_marginEnd="8dp"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@drawable/cinema_ok" />
 
                 <AutoCompleteTextView
                     android:id="@+id/search_input"
@@ -197,7 +197,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_1"
@@ -215,7 +215,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 2: MBO The Starling Mall -->
@@ -283,7 +283,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_2"
@@ -301,7 +301,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 3: GSC Pavilion Kuala Lumpur -->
@@ -369,7 +369,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_3"
@@ -387,7 +387,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 4: TGV 1 Utama -->
@@ -455,7 +455,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_4"
@@ -473,8 +473,8 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
-                </LinearLayout>
+                        android:src="@drawable/watching_movie" />
+                  </LinearLayout>
 
                 <!-- Cinema 5: GSC Mid Valley Megamall -->
                 <LinearLayout
@@ -541,7 +541,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_5"
@@ -559,7 +559,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 6: TGV Sunway Pyramid -->
@@ -628,7 +628,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_6"
@@ -646,7 +646,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 7: GSC IOI City Mall -->
@@ -714,7 +714,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_7"
@@ -732,7 +732,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 8: TGV AEON Bukit Tinggi -->
@@ -800,7 +800,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_8"
@@ -818,7 +818,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 9: GSC The Gardens Mall -->
@@ -886,7 +886,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_9"
@@ -904,7 +904,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
 
                 <!-- Cinema 10: TGV Gurney Paragon -->
@@ -972,7 +972,7 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="4dp"
                                     android:scaleType="fitXY"
-                                    android:src="@mipmap/ic_launcher" />
+                                    android:src="@drawable/map_loaction" />
 
                                 <TextView
                                     android:id="@+id/distance_text_10"
@@ -990,7 +990,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/ic_launcher" />
+                        android:src="@drawable/watching_movie" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

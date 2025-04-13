@@ -7,6 +7,17 @@
     android:gravity="center_horizontal"
     android:padding="16dp">
 
+    <!-- Logo ImageView -->
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/cinema_screen"
+        android:contentDescription="App Logo"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Movie Poster -->
     <ImageView
         android:id="@+id/movie_poster"
         android:layout_width="200dp"

@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:textColor="#F44336"
-            android:background="@drawable/button_blue_background"
+            android:backgroundTint="#FFFFFF"
             android:layout_marginEnd="8dp" />
 
         <Button
@@ -124,6 +124,6 @@
             android:layout_height="wrap_content"
             android:text="Save"
             android:textColor="#2466FD"
-            android:background="@drawable/button_blue_background" />
+            android:backgroundTint="#FFFFFF" />
     </LinearLayout>
 </LinearLayout>
