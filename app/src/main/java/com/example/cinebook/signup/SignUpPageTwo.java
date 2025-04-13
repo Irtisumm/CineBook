@@ -25,6 +25,11 @@ public class SignUpPageTwo extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editText_email);
         linearLayoutContinueButton = findViewById(R.id.linearLayout_continueButton);
 
+        // Retrieve data from SignupPageOne
+        Intent intent = getIntent();
+        String firstName = intent.getStringExtra("FIRST_NAME");
+        String lastName = intent.getStringExtra("LAST_NAME");
+
         // Add functionality to the continue button
         linearLayoutContinueButton.setOnClickListener(v -> {
             String email = editTextEmail.getText().toString().trim();
@@ -36,9 +41,11 @@ public class SignUpPageTwo extends AppCompatActivity {
                 Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
             } else {
                 // Navigate to SignupPageThree
-                Intent intent = new Intent(SignUpPageTwo.this, SignupPageThree.class);
-                intent.putExtra("EMAIL", email); // Pass email to the next page if needed
-                startActivity(intent);
+                Intent nextIntent = new Intent(SignUpPageTwo.this, SignupPageThree.class);
+                nextIntent.putExtra("FIRST_NAME", firstName);
+                nextIntent.putExtra("LAST_NAME", lastName);
+                nextIntent.putExtra("EMAIL", email);
+                startActivity(nextIntent);
             }
         });
     }

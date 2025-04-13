@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -61,6 +60,9 @@ public class MovieTicketActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_ticket);
 
+        // Initialize Bottom Navigation
+        setupBottomNavigation(R.id.nav_ticket);
+
         // Initialize views
         appLogoImageView = findViewById(R.id.app_logo);
         activeTicketTitleTextView = findViewById(R.id.active_ticket_title);
@@ -92,10 +94,22 @@ public class MovieTicketActivity extends BaseActivity {
         }
 
         // Download button click listener
-        downloadButton.setOnClickListener(v -> generateAndSavePDF(order));
+        downloadButton.setOnClickListener(v -> {
+            if (checkStoragePermission()) {
+                generateAndSavePDF(order);
+            } else {
+                requestStoragePermission();
+            }
+        });
 
         // Share button click listener
-        shareButton.setOnClickListener(v -> sharePDF(order));
+        shareButton.setOnClickListener(v -> {
+            if (checkStoragePermission()) {
+                sharePDF(order);
+            } else {
+                requestStoragePermission();
+            }
+        });
 
         // Back to Home button click listener
         backToHomeButton.setOnClickListener(v -> {
@@ -149,11 +163,6 @@ public class MovieTicketActivity extends BaseActivity {
         }
 
         barcodeNumberTextView.setText(generateBarcodeNumber());
-
-        // Add ticket to shared list for BookingConfirmationActivity
-        synchronized (BookingConfirmationActivity.SHARED_TICKET_ORDERS) {
-            BookingConfirmationActivity.SHARED_TICKET_ORDERS.add(order);
-        }
     }
 
     private Bitmap generateQRCode(String text) {
@@ -180,24 +189,14 @@ public class MovieTicketActivity extends BaseActivity {
     }
 
     private boolean checkStoragePermission() {
-        // Only check for legacy storage permissions on Android 12 or lower
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-            return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED;
-        }
-        // No need for WRITE_EXTERNAL_STORAGE on Android 13+ for app-specific storage
-        return true;
+        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestStoragePermission() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    STORAGE_PERMISSION_CODE);
-        } else {
-            // No permission needed for Android 13+, proceed with operation
-            Toast.makeText(this, "Storage permission not required", Toast.LENGTH_SHORT).show();
-        }
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                STORAGE_PERMISSION_CODE);
     }
 
     @Override
@@ -214,12 +213,8 @@ public class MovieTicketActivity extends BaseActivity {
 
     private void generateAndSavePDF(TicketOrder order) {
         try {
-            // Use app-specific external storage (no permission needed on Android 10+)
             String fileName = "Ticket_" + order.getMovieTitle().replace(" ", "_") + "_" + generateBookingCode() + ".pdf";
-            File directory = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-            if (directory == null) {
-                throw new Exception("Unable to access Downloads directory");
-            }
+            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             pdfFile = new File(directory, fileName);
 
             PdfWriter writer = new PdfWriter(new FileOutputStream(pdfFile));
@@ -254,10 +249,10 @@ public class MovieTicketActivity extends BaseActivity {
             }
 
             document.close();
-            Toast.makeText(this, "PDF saved to app's Downloads folder: " + fileName, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "PDF saved to Downloads: " + fileName, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.e("MovieTicketActivity", "Error generating PDF: " + e.getMessage());
-            Toast.makeText(this, "Failed to generate PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to generate PDF", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -267,12 +262,8 @@ public class MovieTicketActivity extends BaseActivity {
                 generateAndSavePDF(order);
             }
 
-            if (pdfFile == null || !pdfFile.exists()) {
-                throw new Exception("PDF file not created");
-            }
-
             Uri pdfUri = FileProvider.getUriForFile(this,
-                    "com.example.cinebook.fileprovider",
+                    getApplicationContext().getPackageName() + ".provider",
                     pdfFile);
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("application/pdf");
@@ -283,7 +274,7 @@ public class MovieTicketActivity extends BaseActivity {
             startActivity(Intent.createChooser(shareIntent, "Share Ticket"));
         } catch (Exception e) {
             Log.e("MovieTicketActivity", "Error sharing PDF: " + e.getMessage());
-            Toast.makeText(this, "Failed to share PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to share PDF", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -34,8 +34,8 @@ public class SignupPageOne extends AppCompatActivity {
             if (firstName.isEmpty() || lastName.isEmpty()) {
                 Toast.makeText(this, "Please fill in both fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Navigate to SignupPageTwo
-                Intent intent = new Intent(SignupPageOne.this, SignUpPageTwo.class); // Update to match the actual class name
+                // Navigate to SignUpPageTwo
+                Intent intent = new Intent(SignupPageOne.this, SignUpPageTwo.class);
                 intent.putExtra("FIRST_NAME", firstName);
                 intent.putExtra("LAST_NAME", lastName);
                 startActivity(intent);

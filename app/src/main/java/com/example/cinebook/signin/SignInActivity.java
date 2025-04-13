@@ -14,6 +14,9 @@ import com.example.cinebook.R;
 import com.example.cinebook.resetpassword.ResetPasswordFirst;
 import com.example.cinebook.signup.SignupPageOne;
 import com.example.cinebook.screens.HomeScreen;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -21,6 +24,7 @@ public class SignInActivity extends AppCompatActivity {
     LinearLayout loginButtonLayout;
     TextView signUpPrompt, forgotPasswordText;
     ImageView passwordToggleIcon;
+    FirebaseAuth mAuth;
 
     boolean passwordVisible = false;
 
@@ -28,6 +32,9 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
         // Initialize views
         emailEditText = findViewById(R.id.emailEditText);
@@ -45,22 +52,38 @@ public class SignInActivity extends AppCompatActivity {
 
         // Handle "Login" button click
         loginButtonLayout.setOnClickListener(v -> {
-            String email = emailEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill in both fields", Toast.LENGTH_SHORT).show();
             } else {
-                // Navigate to HomeScreen
-                Intent intent = new Intent(SignInActivity.this, HomeScreen.class);
-                startActivity(intent);
-                finish(); // Close the current activity to prevent going back to it
+                // Sign in with Firebase
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, task -> {
+                            if (task.isSuccessful()) {
+                                // Navigate to HomeScreen
+                                Intent intent = new Intent(SignInActivity.this, HomeScreen.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // Handle specific errors
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthInvalidUserException e) {
+                                    Toast.makeText(SignInActivity.this, "No account found with this email", Toast.LENGTH_SHORT).show();
+                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                    Toast.makeText(SignInActivity.this, "Invalid password", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    Toast.makeText(SignInActivity.this, "Login failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
 
         // Handle "Sign Up" click
         signUpPrompt.setOnClickListener(v -> {
-            // Navigate to SignupPageOne
             Intent intent = new Intent(SignInActivity.this, SignupPageOne.class);
             startActivity(intent);
         });
