@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -29,6 +32,7 @@ public class MovieDetail extends AppCompatActivity {
     private int selectedDateIndex = -1;
     private int selectedTheaterIndex = -1;
     private String selectedShowtime = null;
+    private int selectedMonth = Calendar.getInstance().get(Calendar.MONTH); // Current month
     private final List<View> dateViews = new ArrayList<>();
     private final List<LayoutTheaterItemBinding> theaterBindings = new ArrayList<>();
 
@@ -50,9 +54,9 @@ public class MovieDetail extends AppCompatActivity {
         // Setup continue button
         binding.buttonContinue.setOnClickListener(v -> onContinueClicked());
 
-        // Setup dynamic dates
+        // Setup month spinner and dates
+        setupMonthSpinner();
         setupDateOptions();
-
         // Setup theater data
         setupTheaterData();
     }
@@ -88,16 +92,51 @@ public class MovieDetail extends AppCompatActivity {
                 .into(binding.layoutShowtimes.dividerShowtimes);
     }
 
+    private void setupMonthSpinner() {
+        Spinner monthSpinner = binding.layoutShowtimes.spinnerMonth;
+        List<String> months = Arrays.asList(
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, months);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        monthSpinner.setAdapter(adapter);
+
+        // Set current month
+        monthSpinner.setSelection(selectedMonth);
+
+        monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedMonth = position;
+                selectedDateIndex = -1; // Reset date selection
+                setupDateOptions();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
     private void setupDateOptions() {
         LinearLayout dateContainer = binding.layoutShowtimes.layoutDateOptions;
         Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, selectedMonth);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        // Get number of days in the selected month
+        int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEE", Locale.US);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd", Locale.US);
 
         dateContainer.removeAllViews();
         dateViews.clear();
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < daysInMonth; i++) {
             View dateView = LayoutInflater.from(this)
                     .inflate(R.layout.layout_date_item, dateContainer, false);
             TextView dayText = dateView.findViewById(R.id.text_day);
@@ -114,6 +153,7 @@ public class MovieDetail extends AppCompatActivity {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
+        // Select the first date by default
         selectDate(0);
     }
 
@@ -178,7 +218,7 @@ public class MovieDetail extends AppCompatActivity {
             addShowtimesSection(showtimesContainer, "PREMIERE", "RM 70", theater.premiereShowtimes, i);
 
             theaterBinding.layoutTheaterDetails.addView(showtimesContainer);
-            theaterBinding.layoutTheaterDetails.setVisibility(View.VISIBLE); // Ensure visible
+            theaterBinding.layoutTheaterDetails.setVisibility(View.VISIBLE);
 
             final int index = i;
             theaterBinding.getRoot().setOnClickListener(v -> selectTheater(index));
@@ -229,7 +269,7 @@ public class MovieDetail extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         section.setOrientation(LinearLayout.VERTICAL);
-        section.setPadding(0, 0, 0, 28);
+        section.setPadding(0, 8, 0, 28);
 
         LinearLayout header = new LinearLayout(this);
         header.setLayoutParams(new LinearLayout.LayoutParams(
@@ -346,10 +386,12 @@ public class MovieDetail extends AppCompatActivity {
 
     private void onContinueClicked() {
         String selectedDate = "";
+        String selectedMonthName = "";
         if (selectedDateIndex >= 0 && selectedDateIndex < dateViews.size()) {
             TextView dateText = dateViews.get(selectedDateIndex).findViewById(R.id.text_date);
             TextView dayText = dateViews.get(selectedDateIndex).findViewById(R.id.text_day);
             selectedDate = dayText.getText() + " " + dateText.getText();
+            selectedMonthName = binding.layoutShowtimes.spinnerMonth.getSelectedItem().toString();
         }
 
         String selectedTheater = "";
@@ -364,13 +406,14 @@ public class MovieDetail extends AppCompatActivity {
         Movie movie = getIntent().getParcelableExtra("movie");
 
         String logMessage = String.format(
-                "Booking: Date=%s, Theater=%s, Showtime=%s",
-                selectedDate, selectedTheater, selectedShowtime
+                "Booking: Month=%s, Date=%s, Theater=%s, Showtime=%s",
+                selectedMonthName, selectedDate, selectedTheater, selectedShowtime
         );
         Log.d("MovieDetail", logMessage);
 
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("movie", movie);
+        intent.putExtra("selected_month", selectedMonthName);
         intent.putExtra("selected_date", selectedDate);
         intent.putExtra("selected_theater", selectedTheater);
         intent.putExtra("selected_theater_address", selectedTheaterAddress);

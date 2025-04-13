@@ -73,12 +73,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="12dp"
-        android:padding="8dp"
+        android:padding="12dp"
         android:background="#F5F5F5"
         android:visibility="visible">
 
         <!-- Showtimes and prices will be added programmatically here -->
 
     </LinearLayout>
-
 </LinearLayout>

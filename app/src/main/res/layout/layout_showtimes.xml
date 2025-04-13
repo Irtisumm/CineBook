@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="55dp"
-    android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:orientation="vertical">
 
     <!-- Show Dates -->
     <LinearLayout
@@ -16,26 +15,50 @@
         android:layout_marginBottom="28dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_shows_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="16dp"
-            android:text="Shows"
-            android:textColor="#191B1C"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
         <LinearLayout
-            android:id="@+id/layout_date_options"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/text_shows_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Shows"
+                android:textColor="#191B1C"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinner_month"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="8dp"
+                android:spinnerMode="dropdown" />
+
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:orientation="horizontal">
+            android:scrollbars="none">
 
-            <!-- Dynamic date options will be populated in code -->
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_date_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Dynamic date options will be populated in code -->
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
     <!-- Theater Listings -->
@@ -61,15 +84,14 @@
                 android:layout_weight="1"
                 android:text="All Theaters"
                 android:textColor="#191B1C"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/icon_theaters_dropdown"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:scaleType="fitXY"
-                android:contentDescription="Theater dropdown" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="fitXY" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,8 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:orientation="vertical"
-            android:padding="8dp">
+            android:orientation="vertical">
 
             <!-- Theater listings will be populated dynamically -->
         </LinearLayout>
