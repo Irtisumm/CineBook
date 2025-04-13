@@ -6,6 +6,17 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Back"
+        android:padding="8dp" />
+
     <ScrollView
         android:id="@+id/main_scroll_view"
         android:layout_width="match_parent"

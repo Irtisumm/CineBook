@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.cinebook.R;
 import com.example.cinebook.model.TicketOrder;
+import com.example.cinebook.moviedetails.MovieDetailActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +24,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     private ImageView cinemaIcon;
     private ImageView screenImage;
     private ImageView moviePoster;
+    private ImageView backButton;
     private LinearLayout timerButton;
     private LinearLayout continueButton;
     private LinearLayout rowK, rowJ, rowH, rowG, rowF, rowE, rowD, rowC, rowB, rowA;
@@ -31,7 +33,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     private TextView cinemaDate;
     private TextView timerText;
     private List<TextView> selectedSeats;
-    private int ticketPrice = 45000; // Price per ticket in IDR
+    private int ticketPrice; // Price per ticket in RM (set dynamically)
     private int subtotal = 0;
     private CountDownTimer countDownTimer;
 
@@ -41,6 +43,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
         setContentView(R.layout.activity_fiest_booking_ticket_flow);
 
         // Initialize views
+        backButton = findViewById(R.id.back_button);
         cinemaIcon = findViewById(R.id.cinema_icon);
         screenImage = findViewById(R.id.screen_image);
         moviePoster = findViewById(R.id.movie_poster);
@@ -68,12 +71,30 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
         final String movieTitle = extras != null ? extras.getString("movie_title", "Unknown Movie") : "Unknown Movie";
         final String selectedTheater = extras != null ? extras.getString("selected_theater", "Gandaria City Cinema") : "Gandaria City Cinema";
         final String selectedDateStr = extras != null ? extras.getString("selected_date", "12 Sep") : "12 Sep";
-        final String selectedShowtime = extras != null ? extras.getString("selected_showtime", "14:45 WIB") : "14:45 WIB";
+        String selectedShowtime = extras != null ? extras.getString("selected_showtime", "REGULAR 14:45") : "REGULAR 14:45";
         final String posterUrl = extras != null ? extras.getString("poster_path", "") : "";
-        Log.d("FiestBookingTicketFlow", "Movie title received: '" + movieTitle + "', Poster URL: '" + posterUrl + "'");
+        Log.d("FiestBookingTicketFlow", "Movie title: '" + movieTitle + "', Showtime: '" + selectedShowtime + "', Poster URL: '" + posterUrl + "'");
+
+        // Set ticket price based on showtime
+        if (selectedShowtime.toUpperCase().contains("IMAX")) {
+            ticketPrice = 50; // RM 50 for IMAX
+        } else if (selectedShowtime.toUpperCase().contains("PREMIERE")) {
+            ticketPrice = 70; // RM 70 for PREMIERE
+        } else {
+            ticketPrice = 30; // RM 30 for REGULAR
+        }
+        Log.d("FiestBookingTicketFlow", "Ticket price set to RM " + ticketPrice);
 
         cinemaName.setText(selectedTheater);
-        cinemaDate.setText(selectedDateStr + ", " + selectedShowtime);
+        cinemaDate.setText(selectedDateStr + ", " + selectedShowtime.replace("_", " "));
+
+        // Back button listener
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(FiestBookingTicketFlow.this, MovieDetailActivity.class);
+            intent.putExtras(extras != null ? extras : new Bundle());
+            startActivity(intent);
+            finish();
+        });
 
         // Load logo image
         try {
@@ -139,13 +160,13 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
                 // Populate TicketOrder
                 order.setMovieTitle(movieTitle);
                 order.setMoviePosterUrl(posterUrl);
-                order.setMovieRating("PG-13");
-                order.setMovieDuration("2h 44m");
-                order.setMovieScore(9.8);
-                order.setMovieRatingsCount(192);
+                order.setMovieRating("PG-13"); // Static, as per your code
+                order.setMovieDuration("2h 44m"); // Static
+                order.setMovieScore(9.8); // Static
+                order.setMovieRatingsCount(192); // Static
                 order.setCinemaLocation(selectedTheater);
-                order.setShowTime(selectedDateStr + ", " + selectedShowtime);
-                order.setStudio("4");
+                order.setShowTime(selectedDateStr + ", " + selectedShowtime.replace("_", " "));
+                order.setStudio("4"); // Static
                 order.setRow(getSelectedRow());
 
                 // Convert selectedSeats to List<String>
@@ -280,7 +301,7 @@ public class FiestBookingTicketFlow extends AppCompatActivity {
     }
 
     private void updateSubtotal() {
-        String formattedSubtotal = String.format(Locale.getDefault(), "IDR %,d", subtotal).replace(",", ".");
+        String formattedSubtotal = String.format(Locale.getDefault(), "RM %d", subtotal);
         subtotalValue.setText(formattedSubtotal);
     }
 
