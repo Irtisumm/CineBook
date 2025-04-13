@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingVertical="20dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/card_icon"
+        android:layout_width="48dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_visa"
+        android:scaleType="fitXY"
+        android:contentDescription="Card Icon" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/card_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="**** **** **** 2157"
+            android:textColor="#191B1C"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/card_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dean Turner"
+            android:textColor="#656E72"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/delete_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_delete"
+        android:scaleType="fitXY"
+        android:contentDescription="Delete Card" />
+</LinearLayout>

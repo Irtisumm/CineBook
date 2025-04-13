@@ -2,15 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.cinebook">
 
-
     <!-- Permissions -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage"/>
-
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -30,9 +30,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".bookingflow.OrderSummaryActivity"
-            android:exported="true" />
-
         <!-- Sign In Activity -->
         <activity
             android:name=".signin.SignInActivity"
@@ -45,13 +42,11 @@
         <activity
             android:name=".signup.SignUpPageTwo"
             android:exported="true" />
-        <activity android:name=".bookingflow.MovieTicketActivity" />
         <activity
             android:name=".signup.SignupPageThree"
             android:exported="true" />
-        <activity
-            android:name="MainActivity"
-            android:exported="true" />
+        <activity android:name="com.example.profile.Language" />
+
         <!-- Home Screen Activity -->
         <activity
             android:name=".screens.HomeScreen"
@@ -65,27 +60,68 @@
             android:name=".resetpassword.ResetPasswordTwo"
             android:exported="true" />
 
-        <!-- Movie Detail Activity -->
+        <!-- Movie Detail Activities -->
         <activity
             android:name=".moviedetails.MovieDetail"
             android:exported="true" />
         <activity
             android:name=".moviedetails.MovieDetailActivity"
             android:exported="true" />
-        <activity android:name="com.example.cinebook.bookingflow.ProfileActivity" />
+
+        <!-- Booking Flow Activities -->
+        <activity
+            android:name=".bookingflow.OrderSummaryActivity"
+            android:exported="true" />
+        <activity android:name="com.example.profile.Help" />
+        <activity android:name="com.example.profile.Terms" />
+        <activity android:name="com.example.profile.Privacy" />
+        <activity
+            android:name=".bookingflow.MovieTicketActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bookingflow.TheaterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bookingflow.FiestBookingTicketFlow"
+            android:exported="false" />
+        <activity
+            android:name=".bookingflow.BookingConfirmationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bookingflow.ProfileActivity"
+            android:exported="false" />
+        <activity android:name="com.example.profile.Payment" />
+        <activity android:name="com.example.profile.Notification" />
 
         <!-- Search Activity -->
         <activity
             android:name=".screens.SearchActivity"
             android:exported="true" />
-        <activity android:name=".bookingflow.TheaterActivity" />
 
-        <activity android:name="com.example.cinebook.bookingflow.FiestBookingTicketFlow" />
         <activity
-            android:name=".bookingflow.BookingConfirmationActivity"
-            android:exported="false" />
+            android:name="com.example.profile.Account"
+            android:exported="true" />
+
+        <!-- Main Activity (if still needed, otherwise remove) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity android:name="com.example.profile.Security" />
+
+
+
+
+        <!-- FileProvider for camera image capture -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.cinebook.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
 
     </application>
-
 
 </manifest>
