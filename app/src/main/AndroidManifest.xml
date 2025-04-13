@@ -24,15 +24,20 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.CineBook">
 
-        <!-- Welcome Screen Activity -->
+        <!-- Loading Screen Activity (New Entry Point) -->
         <activity
-            android:name=".screens.WelcomeScreen"
+            android:name=".screens.LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Welcome Screen Activity -->
+        <activity
+            android:name=".screens.WelcomeScreen"
+            android:exported="true" />
 
         <!-- Sign In Activity -->
         <activity
@@ -112,7 +117,7 @@
             android:exported="true" />
         <activity android:name="com.example.profile.Security" />
 
-        <!-- FileProvider for camera image capture and PDF sharing -->
+        <!-- FileProvider for camera image capture -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.cinebook.fileprovider"

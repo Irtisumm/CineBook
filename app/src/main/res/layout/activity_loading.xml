@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lr27000000000000000"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!-- App Logo -->
+    <ImageView
+        android:id="@+id/loading_logo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/loading"
+        android:scaleType="fitXY"
+        android:contentDescription="App Logo" />
+
+    <!-- Progress Indicator -->
+    <ProgressBar
+        android:id="@+id/loading_progress_bar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#FFFFFF" />
+
+    <!-- Loading Message -->
+    <TextView
+        android:id="@+id/loading_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting CineBook..."
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- Optional Subtitle -->
+    <TextView
+        android:id="@+id/loading_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Preparing your cinematic journey"
+        android:textColor="#B9BFC1"
+        android:textSize="16sp" />
+
+</LinearLayout>

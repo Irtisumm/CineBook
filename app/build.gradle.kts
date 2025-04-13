@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -52,6 +53,10 @@ dependencies {
     // Glide (image loading)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.google.android.material:material:1.9.0")
+    implementation(libs.firebase.auth)
+    implementation(libs.credentials)
+    implementation(libs.credentials.play.services.auth)
+    implementation(libs.googleid)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     // Retrofit + Gson
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
