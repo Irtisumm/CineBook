@@ -10,6 +10,31 @@
     <color name="gray">#9E9E9E</color> <!-- Material Design gray -->
     <color name="active_filter_color">#2466FD</color>
     <color name="inactive_filter_color">#191B1C</color>
+    <color name="text_dark">#000000</color> <!-- Example color -->
+    <!-- Background Colors -->
+    <color name="primary_blue">#007AFF</color> <!-- Example primary blue -->
+    <color name="red">#FF3B30</color> <!-- Example red color -->
+
+    <!-- Text Colors -->!-- Example dark text -->
+    <color name="text_light">#656E72</color> <!-- Example light text -->
+
+    <!-- Icon Tint Colors -->
+    <color name="icon_tint">#B9BFC1</color> <!-- Example icon tint -->
+
+    <!-- Backgrounds -->
+    <color name="rounded_card_background">#F0F0F0</color>
+
+
+    -- White background -->
+     <!-- Blue for primary UI text or highlights -->
+    !-- Dark text -->
+   !-- Lighter text for secondary content -->
+    <color name="light_gray">#D3D3D3</color> <!-- Light gray for borders or strokes -->
+
+
+    <!-- Additional Colors (Optional) -->-- Icon tint color -->
+    <color name="background_gray">#F0F0F0</color>
+
 
 
     <color name="black_191b1c">#191B1C</color>
