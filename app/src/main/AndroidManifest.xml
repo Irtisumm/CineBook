@@ -9,8 +9,12 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="31" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="31" />
 
     <application
         android:allowBackup="true"
@@ -108,10 +112,7 @@
             android:exported="true" />
         <activity android:name="com.example.profile.Security" />
 
-
-
-
-        <!-- FileProvider for camera image capture -->
+        <!-- FileProvider for camera image capture and PDF sharing -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.cinebook.fileprovider"

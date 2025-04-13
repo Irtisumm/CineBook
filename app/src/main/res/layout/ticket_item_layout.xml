@@ -14,7 +14,7 @@
         android:layout_height="140dp"
         android:layout_marginEnd="16dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/image"
         app:shapeAppearanceOverlay="@style/RoundedCornerImage" />
 
     <LinearLayout
@@ -48,7 +48,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="8dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/map_loaction" />
 
             <TextView
                 android:id="@+id/location_text"
@@ -71,7 +71,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="8dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/camera_in" />
 
             <TextView
                 android:id="@+id/time_text"

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -91,22 +92,10 @@ public class MovieTicketActivity extends BaseActivity {
         }
 
         // Download button click listener
-        downloadButton.setOnClickListener(v -> {
-            if (checkStoragePermission()) {
-                generateAndSavePDF(order);
-            } else {
-                requestStoragePermission();
-            }
-        });
+        downloadButton.setOnClickListener(v -> generateAndSavePDF(order));
 
         // Share button click listener
-        shareButton.setOnClickListener(v -> {
-            if (checkStoragePermission()) {
-                sharePDF(order);
-            } else {
-                requestStoragePermission();
-            }
-        });
+        shareButton.setOnClickListener(v -> sharePDF(order));
 
         // Back to Home button click listener
         backToHomeButton.setOnClickListener(v -> {
@@ -191,14 +180,24 @@ public class MovieTicketActivity extends BaseActivity {
     }
 
     private boolean checkStoragePermission() {
-        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED;
+        // Only check for legacy storage permissions on Android 12 or lower
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
+        // No need for WRITE_EXTERNAL_STORAGE on Android 13+ for app-specific storage
+        return true;
     }
 
     private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                STORAGE_PERMISSION_CODE);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    STORAGE_PERMISSION_CODE);
+        } else {
+            // No permission needed for Android 13+, proceed with operation
+            Toast.makeText(this, "Storage permission not required", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -215,8 +214,12 @@ public class MovieTicketActivity extends BaseActivity {
 
     private void generateAndSavePDF(TicketOrder order) {
         try {
+            // Use app-specific external storage (no permission needed on Android 10+)
             String fileName = "Ticket_" + order.getMovieTitle().replace(" ", "_") + "_" + generateBookingCode() + ".pdf";
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File directory = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+            if (directory == null) {
+                throw new Exception("Unable to access Downloads directory");
+            }
             pdfFile = new File(directory, fileName);
 
             PdfWriter writer = new PdfWriter(new FileOutputStream(pdfFile));
@@ -251,10 +254,10 @@ public class MovieTicketActivity extends BaseActivity {
             }
 
             document.close();
-            Toast.makeText(this, "PDF saved to Downloads: " + fileName, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "PDF saved to app's Downloads folder: " + fileName, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.e("MovieTicketActivity", "Error generating PDF: " + e.getMessage());
-            Toast.makeText(this, "Failed to generate PDF", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to generate PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -264,8 +267,12 @@ public class MovieTicketActivity extends BaseActivity {
                 generateAndSavePDF(order);
             }
 
+            if (pdfFile == null || !pdfFile.exists()) {
+                throw new Exception("PDF file not created");
+            }
+
             Uri pdfUri = FileProvider.getUriForFile(this,
-                    getApplicationContext().getPackageName() + ".provider",
+                    "com.example.cinebook.fileprovider",
                     pdfFile);
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("application/pdf");
@@ -276,7 +283,7 @@ public class MovieTicketActivity extends BaseActivity {
             startActivity(Intent.createChooser(shareIntent, "Share Ticket"));
         } catch (Exception e) {
             Log.e("MovieTicketActivity", "Error sharing PDF: " + e.getMessage());
-            Toast.makeText(this, "Failed to share PDF", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to share PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }
