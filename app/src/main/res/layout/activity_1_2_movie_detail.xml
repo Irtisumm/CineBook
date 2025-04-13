@@ -131,7 +131,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
-                android:text="Casts"
+                android:text="Cast"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -141,63 +141,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="horizontal"
                 android:clipChildren="false"
                 android:clipToPadding="false" />
-
-            <LinearLayout
-                android:id="@+id/cast_layout_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/cast_textView_actor1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Tom Cruise"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/cast_textView_actor2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Hayley Atwell"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/cast_textView_actor3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Simon Pegg"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/cast_textView_actor4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Ving Rhames"
-                    android:textColor="#000000"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
 
             <!-- Ratings Section -->
             <TextView
@@ -217,48 +164,120 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="24dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:orientation="vertical">
 
+                <!-- TMDb Rating -->
                 <LinearLayout
-                    android:id="@+id/ratings_layout_scoreContainer"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/ratings_layout_tmdb"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
 
                     <TextView
-                        android:id="@+id/ratings_textView_score"
+                        android:id="@+id/ratings_textView_tmdb_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="TMDb"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ratings_textView_tmdb_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="9.8"
                         android:textColor="#000000"
-                        android:textSize="40sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/ratings_textView_scoreOutOf"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/ratings_textView_tmdb_total"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Out of 10"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="32.8K Ratings"
                         android:textColor="#000000"
                         android:textSize="14sp" />
-
                 </LinearLayout>
 
+                <!-- Rotten Tomatoes Rating -->
                 <LinearLayout
-                    android:id="@+id/ratings_layout_detailsContainer"
-                    android:layout_width="0dp"
+                    android:id="@+id/ratings_layout_rotten"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="16dp">
 
                     <TextView
-                        android:id="@+id/ratings_textView_totalRatings"
+                        android:id="@+id/ratings_textView_rotten_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:text="32.812 Ratings"
+                        android:layout_marginEnd="16dp"
+                        android:text="Rotten Tomatoes"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ratings_textView_rotten_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="N/A"
+                        android:textColor="#000000"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ratings_textView_rotten_total"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="N/A"
+                        android:textColor="#000000"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- IMDb Rating -->
+                <LinearLayout
+                    android:id="@+id/ratings_layout_imdb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/ratings_textView_imdb_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="IMDb"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ratings_textView_imdb_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="N/A"
+                        android:textColor="#000000"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/ratings_textView_imdb_total"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="N/A"
                         android:textColor="#000000"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -404,10 +423,19 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/cinema_textView_selected_date"
+                    android:id="@+id/cinema_textView_selected_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:text="Month: N/A"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/cinema_textView_selected_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:text="Date: N/A"
                     android:textColor="#000000"
                     android:textSize="14sp" />
@@ -477,25 +505,30 @@
                     android:textColor="#000000"
                     android:textSize="16sp" />
             </LinearLayout>
+
+            <!-- Continue Button -->
             <LinearLayout
                 android:id="@+id/continue_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:background="@drawable/cr8b2466fd"
+                android:background="@drawable/button_background"
                 android:paddingVertical="12dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/continue_button_Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Continue"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Continue"/>
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

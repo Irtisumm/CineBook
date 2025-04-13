@@ -17,4 +17,10 @@ public interface TmdbApi {
             @Path("movie_id") int movieId,
             @Query("api_key") String apiKey
     );
+
+    @GET("movie/{movie_id}/release_dates")
+    Call<TmdbReleaseDates> getReleaseDates(
+            @Path("movie_id") int movieId,
+            @Query("api_key") String apiKey
+    );
 }

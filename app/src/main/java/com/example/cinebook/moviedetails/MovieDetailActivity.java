@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.cinebook.R;
 import com.example.cinebook.bookingflow.FiestBookingTicketFlow;
@@ -14,6 +16,7 @@ import com.example.cinebook.network.Movie;
 import com.example.cinebook.network.TmdbApi;
 import com.example.cinebook.network.TmdbCredits;
 import com.example.cinebook.network.TmdbMovieDetails;
+import com.example.cinebook.network.TmdbReleaseDates;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,8 +34,12 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView synopsis;
     private TextView rating;
     private TextView duration;
-    private TextView score;
-    private TextView totalRatings;
+    private TextView tmdbScore;
+    private TextView tmdbTotalRatings;
+    private TextView rottenScore;
+    private TextView rottenTotal;
+    private TextView imdbScore;
+    private TextView imdbTotal;
     private TextView ratedValue;
     private TextView durationValue;
     private TextView languageValue;
@@ -40,14 +47,12 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView cinemaName;
     private TextView cinemaAddress;
     private TextView cinemaDistance;
+    private TextView selectedMonth;
     private TextView selectedDate;
     private TextView selectedShowtime;
-    private TextView actor1;
-    private TextView actor2;
-    private TextView actor3;
-    private TextView actor4;
     private TextView writersValue;
     private LinearLayout continueButton;
+    private RecyclerView castRecyclerView;
     private TmdbApi tmdbApi;
 
     @Override
@@ -55,7 +60,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_1_2_movie_detail);
 
-        // Initialize views using findViewById
+        // Initialize views
         backArrow = findViewById(R.id.header_imageView_backArrow);
         moviePoster = findViewById(R.id.header_imageView_moviePoster);
         locationIcon = findViewById(R.id.cinema_imageView_locationIcon);
@@ -63,8 +68,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         synopsis = findViewById(R.id.header_textView_synopsis);
         rating = findViewById(R.id.header_textView_rating);
         duration = findViewById(R.id.header_textView_duration);
-        score = findViewById(R.id.ratings_textView_score);
-        totalRatings = findViewById(R.id.ratings_textView_totalRatings);
+        tmdbScore = findViewById(R.id.ratings_textView_tmdb_score);
+        tmdbTotalRatings = findViewById(R.id.ratings_textView_tmdb_total);
+        rottenScore = findViewById(R.id.ratings_textView_rotten_score);
+        rottenTotal = findViewById(R.id.ratings_textView_rotten_total);
+        imdbScore = findViewById(R.id.ratings_textView_imdb_score);
+        imdbTotal = findViewById(R.id.ratings_textView_imdb_total);
         ratedValue = findViewById(R.id.rated_textView_value);
         durationValue = findViewById(R.id.duration_textView_value);
         languageValue = findViewById(R.id.language_textView_value);
@@ -72,14 +81,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         cinemaName = findViewById(R.id.cinema_textView_name);
         cinemaAddress = findViewById(R.id.cinema_textView_address);
         cinemaDistance = findViewById(R.id.cinema_textView_distance);
+        selectedMonth = findViewById(R.id.cinema_textView_selected_month);
         selectedDate = findViewById(R.id.cinema_textView_selected_date);
         selectedShowtime = findViewById(R.id.cinema_textView_selected_showtime);
-        actor1 = findViewById(R.id.cast_textView_actor1);
-        actor2 = findViewById(R.id.cast_textView_actor2);
-        actor3 = findViewById(R.id.cast_textView_actor3);
-        actor4 = findViewById(R.id.cast_textView_actor4);
         writersValue = findViewById(R.id.writers_textView_value);
         continueButton = findViewById(R.id.continue_button);
+        castRecyclerView = findViewById(R.id.cast_recyclerView);
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
@@ -87,6 +94,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         tmdbApi = retrofit.create(TmdbApi.class);
+
+        // Setup RecyclerView
+        castRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // Back arrow click listener
         backArrow.setOnClickListener(v -> finish());
@@ -97,6 +108,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             Bundle extras = getIntent().getExtras();
             intent.putExtra("movie_title", movieTitle.getText().toString());
             intent.putExtra("selected_theater", cinemaName.getText().toString());
+            intent.putExtra("selected_month", extras != null ? extras.getString("selected_month", "N/A") : "N/A");
             intent.putExtra("selected_date", extras != null ? extras.getString("selected_date", "N/A") : "N/A");
             intent.putExtra("selected_showtime", extras != null ? extras.getString("selected_showtime", "N/A") : "N/A");
             String posterPath = moviePoster.getTag() != null ? moviePoster.getTag().toString() : "";
@@ -107,6 +119,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         // Get passed data
         Bundle extras = getIntent().getExtras();
         Movie movie = extras != null ? extras.getParcelable("movie") : null;
+        String selectedMonthStr = extras != null ? extras.getString("selected_month", "N/A") : "N/A";
         String selectedDateStr = extras != null ? extras.getString("selected_date", "N/A") : "N/A";
         String selectedTheater = extras != null ? extras.getString("selected_theater", "N/A") : "N/A";
         String selectedTheaterAddress = extras != null ? extras.getString("selected_theater_address", "N/A") : "N/A";
@@ -117,8 +130,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         cinemaName.setText(selectedTheater);
         cinemaAddress.setText(selectedTheaterAddress);
         cinemaDistance.setText(selectedTheaterDistance);
+        selectedMonth.setText("Month: " + selectedMonthStr);
         selectedDate.setText("Date: " + selectedDateStr);
-        selectedShowtime.setText("Showtime: " + selectedShowtimeStr);
+        selectedShowtime.setText("Showtime: " + selectedShowtimeStr.replace("_", " "));
 
         // Load movie data from API
         if (movie != null) {
@@ -163,22 +177,36 @@ public class MovieDetailActivity extends AppCompatActivity {
                     // Synopsis
                     synopsis.setText(details.getOverview());
 
-                    // Rating
-                    String ratingStr = details.getVoteAverage() > 0 ? String.format("%.1f", details.getVoteAverage()) : "N/A";
-                    rating.setText(ratingStr);
-                    score.setText(ratingStr);
-                    totalRatings.setText(details.getVoteCount() + " Ratings");
-                    ratedValue.setText(ratingStr);
+                    // TMDb Score
+                    String tmdbScoreStr = details.getVoteAverage() > 0 ?
+                            String.format("%.1f", details.getVoteAverage()) : "N/A";
+                    tmdbScore.setText(tmdbScoreStr);
+                    String tmdbTotalStr = details.getVoteCount() > 0 ?
+                            String.format("%d Ratings", details.getVoteCount()) : "N/A";
+                    tmdbTotalRatings.setText(tmdbTotalStr);
+
+                    // Simulated Rotten Tomatoes
+                    String rottenScoreStr = details.getVoteAverage() > 0 ?
+                            String.format("%d%%", (int) (details.getVoteAverage() * 10)) : "N/A";
+                    rottenScore.setText(rottenScoreStr);
+                    rottenTotal.setText(details.getVoteCount() > 0 ? "Critics Consensus" : "N/A");
+
+                    // Simulated IMDb
+                    String imdbScoreStr = details.getVoteAverage() > 0 ?
+                            String.format("%.1f/10", details.getVoteAverage()) : "N/A";
+                    imdbScore.setText(imdbScoreStr);
+                    imdbTotal.setText(tmdbTotalStr);
 
                     // Duration
                     int runtime = details.getRuntime();
-                    String durationStr = runtime > 0 ? String.format("%dh %dm", runtime / 60, runtime % 60) : "N/A";
+                    String durationStr = runtime > 0 ?
+                            String.format("%dh %dm", runtime / 60, runtime % 60) : "N/A";
                     duration.setText(durationStr);
                     durationValue.setText(durationStr);
 
                     // Language
-                    String language = details.getSpokenLanguages().isEmpty() ? "N/A" :
-                            details.getSpokenLanguages().get(0).getEnglishName();
+                    String language = details.getSpokenLanguages().isEmpty() ?
+                            "N/A" : details.getSpokenLanguages().get(0).getEnglishName();
                     languageValue.setText(language);
 
                     // Production
@@ -187,6 +215,41 @@ public class MovieDetailActivity extends AppCompatActivity {
                                     .map(TmdbMovieDetails.ProductionCompany::getName)
                                     .collect(Collectors.joining(", "));
                     productionValue.setText(production);
+
+                    // Fetch certification
+                    Call<TmdbReleaseDates> releaseCall = tmdbApi.getReleaseDates(movieId, apiKey);
+                    releaseCall.enqueue(new Callback<TmdbReleaseDates>() {
+                        @Override
+                        public void onResponse(Call<TmdbReleaseDates> call, Response<TmdbReleaseDates> response) {
+                            if (response.isSuccessful() && response.body() != null) {
+                                TmdbReleaseDates releaseDates = response.body();
+                                String ratingStr = "N/A";
+                                for (TmdbReleaseDates.ReleaseDateResult result : releaseDates.getResults()) {
+                                    if ("US".equals(result.getCountryCode())) {
+                                        for (TmdbReleaseDates.ReleaseDate date : result.getReleaseDates()) {
+                                            if (date.getCertification() != null && !date.getCertification().isEmpty()) {
+                                                ratingStr = date.getCertification();
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                rating.setText(ratingStr);
+                                ratedValue.setText(ratingStr);
+                            } else {
+                                rating.setText("N/A");
+                                ratedValue.setText("N/A");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<TmdbReleaseDates> call, Throwable t) {
+                            Log.e("MovieDetailActivity", "Release dates API failed: " + t.getMessage());
+                            rating.setText("N/A");
+                            ratedValue.setText("N/A");
+                        }
+                    });
                 } else {
                     Log.e("MovieDetailActivity", "Failed to load movie details: " + response.message());
                     synopsis.setText("Failed to load details.");
@@ -209,18 +272,11 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onResponse(Call<TmdbCredits> call, Response<TmdbCredits> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     TmdbCredits credits = response.body();
-
-                    // Cast
-                    List<String> castNames = credits.getCast().stream()
-                            .limit(4)
-                            .map(TmdbCredits.Cast::getName)
+                    List<TmdbCredits.Cast> castList = credits.getCast().stream()
+                            .limit(10)
                             .collect(Collectors.toList());
-                    actor1.setText(castNames.size() > 0 ? castNames.get(0) : "N/A");
-                    actor2.setText(castNames.size() > 1 ? castNames.get(1) : "N/A");
-                    actor3.setText(castNames.size() > 2 ? castNames.get(2) : "N/A");
-                    actor4.setText(castNames.size() > 3 ? castNames.get(3) : "N/A");
-
-                    // Writers
+                    CastAdapter castAdapter = new CastAdapter(MovieDetailActivity.this, castList);
+                    castRecyclerView.setAdapter(castAdapter);
                     String writers = credits.getCrew().stream()
                             .filter(crew -> "Writer".equals(crew.getJob()) || "Screenplay".equals(crew.getJob()))
                             .map(TmdbCredits.Crew::getName)
