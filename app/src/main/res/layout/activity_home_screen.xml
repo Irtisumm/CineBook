@@ -25,54 +25,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Location -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingVertical="24dp"
-                    android:paddingHorizontal="20dp">
-
-                    <TextView
-                        android:id="@+id/text_location_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Location"
-                        android:textColor="#656E72"
-                        android:textSize="16sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Spinner
-                        android:id="@+id/spinner_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#191B1C"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/text_location_label"
-                        app:layout_constraintEnd_toStartOf="@id/icon_location" />
-
-                    <ImageView
-                        android:id="@+id/icon_location"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:contentDescription="Location icon"
-                        app:layout_constraintStart_toEndOf="@id/spinner_location"
-                        app:layout_constraintTop_toBottomOf="@id/text_location_label"
-                        app:layout_constraintBottom_toBottomOf="@id/spinner_location" />
-
-                    <ImageView
-                        android:id="@+id/icon_notification"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="Notification icon"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <!-- Search -->
                 <LinearLayout
                     android:id="@+id/layout_search"
@@ -80,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginBottom="36dp"
-                    android:background="@android:drawable/edit_text"
+                    android:background="@drawable/selected_background"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="12dp">
@@ -89,6 +41,7 @@
                         android:id="@+id/icon_search"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:src="@drawable/ic_search"
                         android:contentDescription="Search icon" />
 
                     <AutoCompleteTextView

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +22,20 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private final List<Movie> movies;
     private final Context context;
+    private final boolean isComingSoon; // New flag for Coming Soon
 
+    // Constructor for regular movies
     public MovieAdapter(Context context, List<Movie> movies) {
         this.context = context;
         this.movies = movies;
+        this.isComingSoon = false; // Default to false
+    }
+
+    // Constructor for Coming Soon movies
+    public MovieAdapter(Context context, List<Movie> movies, boolean isComingSoon) {
+        this.context = context;
+        this.movies = movies;
+        this.isComingSoon = isComingSoon;
     }
 
     @NonNull
@@ -48,9 +59,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .into(holder.poster);
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, MovieDetail.class);
-            intent.putExtra("movie", movie);
-            context.startActivity(intent);
+            if (isComingSoon) {
+                Toast.makeText(context, "This movie is coming soon!", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(context, MovieDetail.class);
+                intent.putExtra("movie", movie);
+                context.startActivity(intent);
+            }
         });
     }
 

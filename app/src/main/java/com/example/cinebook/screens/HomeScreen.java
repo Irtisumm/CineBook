@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -44,12 +43,6 @@ public class HomeScreen extends BaseActivity {
 
         // Load header icons
         Glide.with(this)
-                .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/jpgr9kdo_expires_30_days.png")
-                .into(binding.iconLocation);
-        Glide.with(this)
-                .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/notification_icon.png")
-                .into(binding.iconNotification);
-        Glide.with(this)
                 .load("https://storage.googleapis.com/tagjs-prod.appspot.com/v1/d0sulmDxlH/search_icon.png")
                 .into(binding.iconSearch);
 
@@ -80,7 +73,7 @@ public class HomeScreen extends BaseActivity {
             android.util.Log.d("HomeScreen", "Upcoming movies loaded: " + movies.size());
             binding.progressComingSoon.setVisibility(View.GONE);
             binding.recyclerComingSoon.setVisibility(View.VISIBLE);
-            binding.recyclerComingSoon.setAdapter(new MovieAdapter(this, movies));
+            binding.recyclerComingSoon.setAdapter(new MovieAdapter(this, movies, true)); // Pass true for Coming Soon
             updateAutocompleteSuggestions();
         });
 
@@ -92,31 +85,6 @@ public class HomeScreen extends BaseActivity {
 
         viewModel.getError().observe(this, error -> {
             if (error != null) Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-        });
-
-        // Set up location spinner with Malaysian cities
-        ArrayAdapter<CharSequence> locationAdapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.malaysian_cities,
-                android.R.layout.simple_spinner_item
-        );
-        locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerLocation.setAdapter(locationAdapter);
-        binding.spinnerLocation.setSelection(0); // Default to Kuala Lumpur
-        viewModel.setLocation("Kuala Lumpur");
-
-        binding.spinnerLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedLocation = parent.getItemAtPosition(position).toString();
-                viewModel.setLocation(selectedLocation);
-                Toast.makeText(HomeScreen.this, "Location set to: " + selectedLocation, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
         });
 
         // Set up search with autocomplete
