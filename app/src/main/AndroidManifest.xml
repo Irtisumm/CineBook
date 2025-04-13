@@ -72,13 +72,18 @@
         <activity
             android:name=".moviedetails.MovieDetailActivity"
             android:exported="true" />
+        <activity android:name="com.example.cinebook.bookingflow.ProfileActivity" />
 
         <!-- Search Activity -->
         <activity
             android:name=".screens.SearchActivity"
             android:exported="true" />
+        <activity android:name=".bookingflow.TheaterActivity" />
 
         <activity android:name="com.example.cinebook.bookingflow.FiestBookingTicketFlow" />
+        <activity
+            android:name=".bookingflow.BookingConfirmationActivity"
+            android:exported="false" />
 
     </application>
 

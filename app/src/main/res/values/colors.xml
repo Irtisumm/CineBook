@@ -4,6 +4,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray_b9bfc1">#B9BFC1</color>
 
+    <color name="primary">#2196F3</color> <!-- This is a shade of blue -->
+
+    <!-- Gray color (for unselected nav items) -->
+    <color name="gray">#9E9E9E</color> <!-- Material Design gray -->
+    <color name="active_filter_color">#2466FD</color>
+    <color name="inactive_filter_color">#191B1C</color>
 
 
     <color name="black_191b1c">#191B1C</color>

@@ -8,11 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.bumptech.glide.Glide;
+import com.example.cinebook.BaseActivity;
 import com.example.cinebook.R;
 import com.example.cinebook.adapters.MovieAdapter;
 import com.example.cinebook.adapters.NewsAdapter;
@@ -20,10 +16,15 @@ import com.example.cinebook.databinding.ActivityHomeScreenBinding;
 import com.example.cinebook.network.Movie;
 import com.example.cinebook.viewmodel.HomeViewModel;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreen extends BaseActivity {
     private ActivityHomeScreenBinding binding;
     private HomeViewModel viewModel;
     private ArrayAdapter<String> autocompleteAdapter;
@@ -33,6 +34,9 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Initialize Bottom Navigation
+        setupBottomNavigation(R.id.nav_home);
 
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         binding.setViewModel(viewModel);

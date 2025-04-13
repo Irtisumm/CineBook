@@ -11,10 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import com.bumptech.glide.Glide;
+import com.example.cinebook.BaseActivity;
 import com.example.cinebook.R;
 import com.example.cinebook.model.TicketOrder;
 import com.example.cinebook.screens.HomeScreen;
@@ -34,7 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class MovieTicketActivity extends AppCompatActivity {
+public class MovieTicketActivity extends BaseActivity {
 
     private ImageView appLogoImageView;
     private TextView activeTicketTitleTextView;
@@ -86,6 +86,7 @@ public class MovieTicketActivity extends AppCompatActivity {
             bindData(order);
         } else {
             Log.e("MovieTicketActivity", "TicketOrder is null");
+            Toast.makeText(this, "No ticket data available", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -117,17 +118,13 @@ public class MovieTicketActivity extends AppCompatActivity {
     }
 
     private void bindData(TicketOrder order) {
-        // Set static content
         activeTicketTitleTextView.setText("Active ticket");
-
-        // Load app logo
         Glide.with(this)
                 .load(R.mipmap.ic_launcher)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(appLogoImageView);
 
-        // Load movie poster
         String posterUrl = order.getMoviePosterUrl();
         Log.d("MovieTicketActivity", "Loading movie poster URL: " + posterUrl);
         if (posterUrl != null && !posterUrl.isEmpty()) {
@@ -137,14 +134,10 @@ public class MovieTicketActivity extends AppCompatActivity {
                     .error(R.drawable.placeholder_poster)
                     .into(moviePosterImageView);
         } else {
-            Log.w("MovieTicketActivity", "Movie poster URL is null or empty");
             moviePosterImageView.setImageResource(R.drawable.placeholder_poster);
         }
 
-        // Generate booking code
         String bookingCode = generateBookingCode();
-
-        // Set ticket details
         bookingCodeTextView.setText("Booking Code: #" + bookingCode);
         movieTitleTextView.setText(order.getMovieTitle());
         cinemaLocationTextView.setText(order.getCinemaLocation() != null ? order.getCinemaLocation() : "Unknown");
@@ -154,7 +147,6 @@ public class MovieTicketActivity extends AppCompatActivity {
         rowNumberTextView.setText(order.getRow() != null ? order.getRow() : "Unknown");
         seatNumbersTextView.setText(String.join(", ", order.getSelectedSeats()));
 
-        // Generate QR code
         String qrContent = "Booking Code: #" + bookingCode + "\n" +
                 "Movie: " + order.getMovieTitle() + "\n" +
                 "Seats: " + String.join(", ", order.getSelectedSeats()) + "\n" +
@@ -164,12 +156,15 @@ public class MovieTicketActivity extends AppCompatActivity {
         if (qrBitmap != null) {
             qrCodeImageView.setImageBitmap(qrBitmap);
         } else {
-            Log.e("MovieTicketActivity", "Failed to generate QR code");
             qrCodeImageView.setImageResource(R.drawable.placeholder_poster);
         }
 
-        // Set barcode number
         barcodeNumberTextView.setText(generateBarcodeNumber());
+
+        // Add ticket to shared list for BookingConfirmationActivity
+        synchronized (BookingConfirmationActivity.SHARED_TICKET_ORDERS) {
+            BookingConfirmationActivity.SHARED_TICKET_ORDERS.add(order);
+        }
     }
 
     private Bitmap generateQRCode(String text) {
@@ -220,17 +215,14 @@ public class MovieTicketActivity extends AppCompatActivity {
 
     private void generateAndSavePDF(TicketOrder order) {
         try {
-            // Define file path
             String fileName = "Ticket_" + order.getMovieTitle().replace(" ", "_") + "_" + generateBookingCode() + ".pdf";
             File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             pdfFile = new File(directory, fileName);
 
-            // Create PDF
             PdfWriter writer = new PdfWriter(new FileOutputStream(pdfFile));
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
-            // Add ticket details
             document.add(new Paragraph("Movie Ticket").setBold().setFontSize(20));
             document.add(new Paragraph("Booking Code: #" + generateBookingCode()));
             document.add(new Paragraph("Movie: " + order.getMovieTitle()));
@@ -241,7 +233,6 @@ public class MovieTicketActivity extends AppCompatActivity {
             document.add(new Paragraph("Row: " + (order.getRow() != null ? order.getRow() : "Unknown")));
             document.add(new Paragraph("Seats: " + String.join(", ", order.getSelectedSeats())));
 
-            // Add QR code
             Bitmap qrBitmap = generateQRCode(
                     "Booking Code: #" + generateBookingCode() + "\n" +
                             "Movie: " + order.getMovieTitle() + "\n" +
@@ -259,9 +250,7 @@ public class MovieTicketActivity extends AppCompatActivity {
                 document.add(qrImage);
             }
 
-            // Close document
             document.close();
-
             Toast.makeText(this, "PDF saved to Downloads: " + fileName, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.e("MovieTicketActivity", "Error generating PDF: " + e.getMessage());
@@ -271,12 +260,10 @@ public class MovieTicketActivity extends AppCompatActivity {
 
     private void sharePDF(TicketOrder order) {
         try {
-            // Generate PDF if not already created
             if (pdfFile == null || !pdfFile.exists()) {
                 generateAndSavePDF(order);
             }
 
-            // Share PDF
             Uri pdfUri = FileProvider.getUriForFile(this,
                     getApplicationContext().getPackageName() + ".provider",
                     pdfFile);
@@ -286,7 +273,7 @@ public class MovieTicketActivity extends AppCompatActivity {
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Movie Ticket: " + order.getMovieTitle());
             shareIntent.putExtra(Intent.EXTRA_TEXT, "Here is your movie ticket PDF for " + order.getMovieTitle());
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(shareIntent, "Share Ticket PDF"));
+            startActivity(Intent.createChooser(shareIntent, "Share Ticket"));
         } catch (Exception e) {
             Log.e("MovieTicketActivity", "Error sharing PDF: " + e.getMessage());
             Toast.makeText(this, "Failed to share PDF", Toast.LENGTH_SHORT).show();
