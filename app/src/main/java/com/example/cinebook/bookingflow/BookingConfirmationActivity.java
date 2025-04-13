@@ -1,11 +1,16 @@
 package com.example.cinebook.bookingflow;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.cinebook.BaseActivity;
 import com.example.cinebook.R;
@@ -23,12 +28,12 @@ public class BookingConfirmationActivity extends BaseActivity {
     private TextView filterAllTextView;
     private TextView filterActiveTextView;
     private TextView filterPastTextView;
-    private LinearLayout ticketItem1;
-    private LinearLayout ticketItem2;
+    private RecyclerView ticketRecyclerView;
 
     private List<Ticket> allTickets;
     private List<Ticket> activeTickets;
     private List<Ticket> pastTickets;
+    private TicketAdapter ticketAdapter;
 
     // Static list to receive tickets from MovieTicketActivity
     public static final List<TicketOrder> SHARED_TICKET_ORDERS = new ArrayList<>();
@@ -46,11 +51,15 @@ public class BookingConfirmationActivity extends BaseActivity {
         filterAllTextView = findViewById(R.id.filter_all);
         filterActiveTextView = findViewById(R.id.filter_active);
         filterPastTextView = findViewById(R.id.filter_past);
-        ticketItem1 = findViewById(R.id.ticket_item_1);
-        ticketItem2 = findViewById(R.id.ticket_item_2);
+        ticketRecyclerView = findViewById(R.id.ticket_recycler_view);
 
-        // Initialize ticket data from shared list
+        // Initialize ticket data
         initializeTicketData();
+
+        // Set up RecyclerView
+        ticketAdapter = new TicketAdapter(allTickets);
+        ticketRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ticketRecyclerView.setAdapter(ticketAdapter);
 
         // Set up filter tabs
         setupFilterTabs();
@@ -88,14 +97,14 @@ public class BookingConfirmationActivity extends BaseActivity {
                     "Mission: Impossible - Dead Reckoning Part One",
                     "Gandaria City Mall",
                     "Saturday, 12 September 14:25 WIB",
-                    "https://example.com/mission_impossible_poster.jpg", // Placeholder URL
+                    "https://example.com/mission_impossible_poster.jpg",
                     true
             );
             Ticket mockTicket2 = new Ticket(
                     "Doctor Strange In The Multiverse Of Madness",
                     "Gandaria City Mall",
                     "Saturday, 5 September 14:25 WIB",
-                    "https://example.com/doctor_strange_poster.jpg", // Placeholder URL
+                    "https://example.com/doctor_strange_poster.jpg",
                     false
             );
             allTickets.add(mockTicket1);
@@ -154,9 +163,6 @@ public class BookingConfirmationActivity extends BaseActivity {
     }
 
     private void displayTickets(String filter) {
-        ticketItem1.setVisibility(View.GONE);
-        ticketItem2.setVisibility(View.GONE);
-
         List<Ticket> ticketsToShow;
         switch (filter) {
             case "Active":
@@ -169,44 +175,10 @@ public class BookingConfirmationActivity extends BaseActivity {
                 ticketsToShow = allTickets;
                 break;
         }
-
-        if (ticketsToShow.size() > 0) {
-            populateTicketItem(ticketItem1, ticketsToShow.get(0));
-            ticketItem1.setVisibility(View.VISIBLE);
-        }
-        if (ticketsToShow.size() > 1) {
-            populateTicketItem(ticketItem2, ticketsToShow.get(1));
-            ticketItem2.setVisibility(View.VISIBLE);
-        }
+        ticketAdapter.updateTickets(ticketsToShow);
     }
 
-    private void populateTicketItem(LinearLayout ticketItem, Ticket ticket) {
-        ImageView ticketImage = ticketItem.findViewById(ticketItem.getId() == R.id.ticket_item_1 ? R.id.ticket_image_1 : R.id.ticket_image_2);
-        TextView ticketTitle = ticketItem.findViewById(ticketItem.getId() == R.id.ticket_item_1 ? R.id.ticket_title_1 : R.id.ticket_title_2);
-        TextView locationText = ticketItem.findViewById(ticketItem.getId() == R.id.ticket_item_1 ? R.id.location_text_1 : R.id.location_text_2);
-        TextView timeText = ticketItem.findViewById(ticketItem.getId() == R.id.ticket_item_1 ? R.id.time_text_1 : R.id.time_text_2);
-
-        // Load image (URL or resource)
-        if (ticket.getImageUrl() != null && !ticket.getImageUrl().isEmpty()) {
-            Glide.with(this)
-                    .load(ticket.getImageUrl())
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .into(ticketImage);
-        } else {
-            Glide.with(this)
-                    .load(R.mipmap.ic_launcher)
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .into(ticketImage);
-        }
-
-        ticketTitle.setText(ticket.getTitle());
-        locationText.setText(ticket.getLocation());
-        timeText.setText(ticket.getTime());
-    }
-
-    // Updated Ticket model class to handle URL
+    // Ticket model class
     private static class Ticket {
         private final String title;
         private final String location;
@@ -240,6 +212,73 @@ public class BookingConfirmationActivity extends BaseActivity {
 
         public boolean isActive() {
             return isActive;
+        }
+    }
+
+    // RecyclerView Adapter
+    private class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketViewHolder> {
+        private List<Ticket> tickets;
+
+        public TicketAdapter(List<Ticket> tickets) {
+            this.tickets = new ArrayList<>(tickets);
+        }
+
+        public void updateTickets(List<Ticket> newTickets) {
+            this.tickets = new ArrayList<>(newTickets);
+            notifyDataSetChanged();
+        }
+
+        @NonNull
+        @Override
+        public TicketViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.ticket_item_layout, parent, false);
+            return new TicketViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull TicketViewHolder holder, int position) {
+            Ticket ticket = tickets.get(position);
+            holder.bind(ticket);
+        }
+
+        @Override
+        public int getItemCount() {
+            return tickets.size();
+        }
+
+        class TicketViewHolder extends RecyclerView.ViewHolder {
+            ImageView ticketImage;
+            TextView ticketTitle;
+            TextView locationText;
+            TextView timeText;
+
+            public TicketViewHolder(@NonNull View itemView) {
+                super(itemView);
+                ticketImage = itemView.findViewById(R.id.ticket_image);
+                ticketTitle = itemView.findViewById(R.id.ticket_title);
+                locationText = itemView.findViewById(R.id.location_text);
+                timeText = itemView.findViewById(R.id.time_text);
+            }
+
+            public void bind(Ticket ticket) {
+                if (ticket.getImageUrl() != null && !ticket.getImageUrl().isEmpty()) {
+                    Glide.with(itemView.getContext())
+                            .load(ticket.getImageUrl())
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(ticketImage);
+                } else {
+                    Glide.with(itemView.getContext())
+                            .load(R.mipmap.ic_launcher)
+                            .placeholder(R.mipmap.ic_launcher)
+                            .error(R.mipmap.ic_launcher)
+                            .into(ticketImage);
+                }
+                ticketTitle.setText(ticket.getTitle());
+                locationText.setText(ticket.getLocation());
+                timeText.setText(ticket.getTime());
+            }
         }
     }
 }
